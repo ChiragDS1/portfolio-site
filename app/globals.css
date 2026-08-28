@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/*  "Iris" design tokens                                              */
+/*  Values are space-separated RGB channels so Tailwind alpha         */
+/*  modifiers (bg-accent/15) work.                                    */
+/* ------------------------------------------------------------------ */
+
+:root {
+  /* Light theme — cool paper, not cream */
+  --bg: 244 244 249;
+  --surface: 255 255 255;
+  --line: 224 225 236;
+  --text: 20 22 42;
+  --muted: 88 94 126;
+  --accent: 91 69 217; /* iris */
+  --accent-2: 154 95 9; /* gold */
+
+  --grid: 20 22 42;
+  color-scheme: light;
+}
+
+.dark {
+  /* Dark theme (default) — deep indigo-ink */
+  --bg: 11 13 23;
+  --surface: 20 24 38;
+  --line: 36 42 66;
+  --text: 237 238 247;
+  --muted: 156 160 191;
+  --accent: 139 124 246; /* iris */
+  --accent-2: 245 176 73; /* gold */
+
+  --grid: 156 160 191;
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  * {
+    border-color: rgb(var(--line));
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: rgb(var(--bg));
+    color: rgb(var(--text));
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  /* Never remove focus rings — make them unmistakable. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  ::selection {
+    background-color: rgb(var(--accent) / 0.28);
+    color: rgb(var(--text));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  .mono-label {
+    @apply font-mono text-xs uppercase tracking-[0.16em] text-muted;
+  }
+
+  .pill {
+    @apply inline-flex items-center rounded-md border border-line bg-surface px-2.5 py-1 font-mono text-xs text-muted;
+  }
+
+  .section-wrap {
+    @apply mx-auto w-full max-w-content px-5 sm:px-6;
+  }
+
+  .panel {
+    @apply rounded-xl border border-line bg-surface/60;
+  }
+}
