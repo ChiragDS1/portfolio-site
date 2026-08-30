@@ -30,10 +30,15 @@ export const profile =
 /* About                                                               */
 /* ------------------------------------------------------------------ */
 
+// About copy — supplied verbatim by Chirag. Keep the voice; don't corporate-ify it.
+// NOTE FOR CHIRAG: the second paragraph ("first got hooked on the idea that a
+// well-designed pipeline can quietly save someone hours...") and the last line
+// about the RAG project are personal takes — tweak the emphasis if that's not
+// quite how you'd put it. Nothing here was invented beyond what you wrote.
 export const about: string[] = [
-  "My work starts at the pipeline. I design ingestion and transformation layers — Azure Data Factory, Databricks, Snowflake, PySpark — that pull messy JSON, CSV and web data into governed, well-modeled tables. Medallion architecture, schema governance, data-quality frameworks: the unglamorous foundation that everything downstream depends on.",
-  "On top of that foundation I do the modeling. Time-series forecasting, regression, NLP and LLM workflows that turn the curated data into predictions and insight stakeholders can act on. Because I own both halves, the features my models train on are reliable by construction rather than patched together after the fact.",
-  "I'm finishing an M.S. in Computer Science at the University of Illinois at Chicago and I'm looking for roles where data engineering and data science sit close together.",
+  "I build the pipelines nobody sees until they break. Most of my work lives in that unglamorous middle layer — turning messy, unstructured data into something a model or a dashboard can actually trust.",
+  "I moved from Pune to Chicago for my Master's in Computer Science at UIC, which is where I ended up going deeper into the data engineering side than I expected — Databricks, Azure, Snowflake, the whole pipeline stack. Before that, I was building sales forecasting systems at M.S Engineers, which is honestly where I first got hooked on the idea that a well-designed pipeline can quietly save someone hours of manual work every week.",
+  "Outside of the resume-friendly version of this: I like taking a genuinely messy dataset and making it behave. The RAG project below started because I got tired of manually searching through PDFs for one specific paragraph.",
 ];
 
 /* ------------------------------------------------------------------ */
@@ -109,14 +114,14 @@ export const coreTech: { group: string; items: string[] }[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* Résumé variants (kept, but secondary)                               */
+/* Résumé                                                              */
 /* ------------------------------------------------------------------ */
 
-export const resumeVariants: { id: string; label: string; href: string }[] = [
-  { id: "de", label: "Data Engineer", href: "/resume/Chirag_Shinde_DataEngineer.pdf" },
-  { id: "da", label: "Data Analyst", href: "/resume/Chirag_Shinde_DataAnalyst.pdf" },
-  { id: "ds", label: "Data Scientist", href: "/resume/Chirag_Shinde_DataScientist.pdf" },
-];
+/** Single résumé — the Data Engineer version. Path is base-path-prefixed at render. */
+export const resume = {
+  label: "Download Resume",
+  href: "/resume/Chirag_Shinde_DataEngineer.pdf",
+};
 
 /* ------------------------------------------------------------------ */
 /* Skills — grouped superset, fixed order (DE foundation → DS)          */
@@ -251,20 +256,14 @@ export const experience: ExperienceItem[] = [
 /* Projects                                                            */
 /* ------------------------------------------------------------------ */
 
-export interface ProjectLink {
-  label: string;
-  href: string;
-  kind: "github" | "demo";
-}
-
 export interface ProjectItem {
   name: string;
   period: string;
   tags: string[];
   summary: string[];
-  links: ProjectLink[];
 }
 
+// Static, informational cards only — not linked anywhere.
 export const projects: ProjectItem[] = [
   {
     name: "RAG-based Q&A System with Vector DB",
@@ -274,10 +273,6 @@ export const projects: ProjectItem[] = [
       "Cut manual document-search time by 70% with an end-to-end ingestion / transformation pipeline (PySpark, distributed text processing).",
       "Designed structured metadata plus high-dimensional vector indexing (FAISS HNSW/IVF) with PostgreSQL for citation-grounded semantic search, scaled to large-scale PDF ingestion with OCR-derived text extraction.",
       "Shipped a production-ready app: Gemini LLM backend, Streamlit frontend, Dagster orchestration.",
-    ],
-    links: [
-      // TODO: add real links, or remove entries you don't have.
-      { label: "GitHub", href: "https://github.com/", kind: "github" },
     ],
   },
   {
@@ -289,7 +284,6 @@ export const projects: ProjectItem[] = [
       "Applied Negative Binomial Regression, ANOVA, and OLS modeling to link emotional indicators with audience-engagement metrics.",
       "Integrated the structured datasets with Power BI dashboards for scalable reporting.",
     ],
-    links: [{ label: "GitHub", href: "https://github.com/", kind: "github" }],
   },
 ];
 
@@ -302,6 +296,8 @@ export interface EducationItem {
   degree: string;
   location: string;
   period: string;
+  /** Optional completion marker, e.g. "Graduated". */
+  status?: string;
 }
 
 export const education: EducationItem[] = [
@@ -310,6 +306,7 @@ export const education: EducationItem[] = [
     degree: "M.S. Computer Science",
     location: "Chicago, IL",
     period: "Aug 2024 – May 2026",
+    status: "Graduated",
   },
   {
     school: "SPPU University",

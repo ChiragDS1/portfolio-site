@@ -62,9 +62,9 @@ Everything the site displays comes from **`data/resume.ts`**:
 | Core Technologies strip | `coreTech` |
 | Skill groups & items | `skillGroups` (rendered in array order) |
 | Jobs, titles, bullets | `experience` |
-| Projects, tags, links | `projects` |
-| Education / certifications | `education`, `certifications` |
-| Résumé menu options | `resumeVariants` |
+| Projects, tags | `projects` (static cards — no links) |
+| Education / certifications | `education` (`status` marks a completed degree), `certifications` |
+| Résumé download | `resume` (single Data Engineer PDF) |
 | Nav items | `navSections` |
 
 ### Core Technologies icons
@@ -78,32 +78,29 @@ Power BI) fall back to a generic `lucide-react` icon — see `FALLBACK` in
 
 ### Still using placeholders — replace before launch
 
-- `identity.githubUrl` → your real GitHub profile URL
-- `projects[].links` → real GitHub / live-demo URLs (delete entries you don't have)
+- `identity.githubUrl` → your real GitHub profile URL (used by the hero social icon)
 - `public/og.png` → generate from `public/og.svg` (see below)
 
 The public URL is configured in **one place**: `next.config.mjs` (`REPO_SUBPATH`)
 and `lib/site.ts` (`SITE_ORIGIN`). See "Hosting on GitHub Pages" below.
 
-The three résumé PDFs in `public/resume/` are your real files. Note they contain
-your phone number — swap in phone-free variants (same filenames) if you'd rather
-the hosted copies didn't.
+The résumé PDF in `public/resume/` is your real file. Note it contains your phone
+number — swap in a phone-free version (same filename) if you'd rather the hosted
+copy didn't.
 
 ---
 
-## Résumé PDFs
+## Résumé PDF
 
-Three files in **`public/resume/`**, named exactly:
+One file in **`public/resume/`**:
 
 ```
 Chirag_Shinde_DataEngineer.pdf
-Chirag_Shinde_DataAnalyst.pdf
-Chirag_Shinde_DataScientist.pdf
 ```
 
-`npm install` runs `scripts/make-placeholder-pdfs.mjs`, which only creates a
-placeholder for a **missing** name — it never overwrites an existing file. The
-hero "Download résumé" button opens a keyboard-operable menu linking all three.
+The hero "Download Resume" button (`components/ResumeButton.tsx`) links directly
+to it. `npm install` runs `scripts/make-placeholder-pdfs.mjs`, which only creates
+a placeholder if the file is **missing** — it never overwrites an existing one.
 
 ---
 
@@ -158,7 +155,7 @@ The only code that changed for the **subpath** (`/portfolio-site`):
 - **`next.config.mjs`** — added `basePath` + `env.NEXT_PUBLIC_BASE_PATH`, driven by
   the single constant `REPO_SUBPATH`.
 - **`lib/site.ts`** (new) — `BASE_PATH`, `SITE_URL`, and `withBasePath()` helper.
-- **`components/ResumeMenu.tsx`** — résumé PDF links now go through
+- **`components/ResumeButton.tsx`** — the résumé link goes through
   `withBasePath("/resume/…")` (plain `<a href>` to `/public` is *not*
   auto-prefixed by Next; `_next` assets, fonts and the favicon *are*).
 - **`app/layout.tsx`, `app/robots.ts`, `app/sitemap.ts`** — canonical / Open Graph
@@ -227,8 +224,8 @@ One coherent choreography, not scattered hover effects:
    pulse loops along each connector.
 3. **Stat bar** — count-ups fire on scroll-into-view (IntersectionObserver), once.
 4. **Experience / Projects / Skills / About** — fade + slight rise, staggered, once.
-5. **Project cards** — a restrained 4 px lift + border tint on hover.
-6. **Nav** — smooth-scroll to anchors + active-section highlight.
+   (Project cards are static and informational — no links, no hover state.)
+5. **Nav** — smooth-scroll to anchors + active-section highlight.
 
 When the visitor requests reduced motion, `<MotionConfig reducedMotion="user">`
 disables transform/layout/stagger animation, the CSS media query neutralizes
@@ -246,9 +243,8 @@ Verified with `axe-core` (WCAG 2.0/2.1 A + AA): **0 violations**. Also handled:
 - **No layout shift** — stat count-ups use `tabular-nums` with fixed digit counts;
   pipeline cards are equal-height via flexbox; revealed content occupies its space
   from first paint (opacity-only animation).
-- **Keyboard** — résumé menu is a full ARIA menu (Enter/Space/↓ open, ↑/↓/Home/End
-  move, Esc closes and restores focus, click-outside closes); nav and theme toggle
-  are standard buttons/links; focus rings are never removed.
+- **Keyboard** — everything interactive is a native `<a>` / `<button>` (résumé
+  download, nav, theme toggle, mobile menu); focus rings are never removed.
 - **Landmarks** — `header` / `nav[aria-label]` / `main` / `footer`, every `section`
   labelled, skip link.
 - **Contrast** — every text/background pair ≥ 4.5:1 in both themes (`accent-2` on
@@ -302,11 +298,11 @@ app/
 components/
   Portfolio.tsx     section order + <MotionConfig reducedMotion="user">
   Nav.tsx           sticky nav, scroll-spy, mobile menu
-  Hero.tsx          staggered load: name / role / tagline / PipelineFlow / ResumeMenu
+  Hero.tsx          staggered load: name / role / tagline / PipelineFlow / ResumeButton
   PipelineFlow.tsx  ← signature element (Pipeline → Feature → Model → Insight)
   StatBar.tsx  CountUp.tsx     scroll-triggered count-ups
   CoreTech.tsx      brand-logo strip (DE / DS), monochrome
-  ResumeMenu.tsx    accessible résumé-download menu
+  ResumeButton.tsx  single résumé download link (Data Engineer PDF)
   About.tsx  Experience.tsx  Projects.tsx  Skills.tsx  Education.tsx  Contact.tsx
   ThemeToggle.tsx  Reveal.tsx  SectionHeading.tsx  GridBackdrop.tsx
 data/

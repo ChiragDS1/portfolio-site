@@ -17,8 +17,15 @@ export function Education() {
                 <h3 className="font-display text-base font-semibold text-text">{item.school}</h3>
                 <p className="mono-label whitespace-nowrap">{item.period}</p>
               </div>
-              <p className="mt-1 text-sm text-muted">
-                {item.degree} — {item.location}
+              <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
+                <span>
+                  {item.degree} — {item.location}
+                </span>
+                {item.status && (
+                  <span className="rounded border border-accent/40 bg-accent/10 px-1.5 py-0.5 font-mono text-[0.65rem] uppercase tracking-wide text-accent">
+                    {item.status}
+                  </span>
+                )}
               </p>
             </div>
           </Reveal>

@@ -17,8 +17,6 @@ mkdirSync(outDir, { recursive: true });
 
 const files = {
   "Chirag_Shinde_DataEngineer.pdf": "Chirag Deepak Shinde — Data Engineer (placeholder resume)",
-  "Chirag_Shinde_DataAnalyst.pdf": "Chirag Deepak Shinde — Data Analyst (placeholder resume)",
-  "Chirag_Shinde_DataScientist.pdf": "Chirag Deepak Shinde — Data Scientist (placeholder resume)",
 };
 
 /** Build a single-page PDF with a correct cross-reference table. */

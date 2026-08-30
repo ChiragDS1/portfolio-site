@@ -1,4 +1,4 @@
-import type { Transition, Variants } from "framer-motion";
+import type { Variants } from "framer-motion";
 
 /**
  * Shared motion vocabulary — one coherent choreography, not scattered effects.
@@ -47,5 +47,3 @@ export const revealStagger: Variants = {
 };
 
 export const scrollViewport = { once: true, margin: "0px 0px -12% 0px" } as const;
-
-export const cardHover: Transition = { type: "spring", stiffness: 300, damping: 24 };

@@ -6,7 +6,7 @@ import { identity } from "@/data/resume";
 import { heroItem, heroStagger } from "@/lib/motion";
 import { GridBackdrop } from "./GridBackdrop";
 import { PipelineFlow } from "./PipelineFlow";
-import { ResumeMenu } from "./ResumeMenu";
+import { ResumeButton } from "./ResumeButton";
 
 export function Hero() {
   return (
@@ -47,7 +47,7 @@ export function Hero() {
             variants={heroItem}
             className="mt-10 flex flex-wrap items-center gap-3"
           >
-            <ResumeMenu />
+            <ResumeButton />
             <div className="flex items-center gap-1">
               <IconLink href={`mailto:${identity.email}`} label="Email Chirag">
                 <Mail className="h-4 w-4" aria-hidden />

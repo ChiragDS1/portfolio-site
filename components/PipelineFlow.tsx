@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Brain, Columns3, LineChart, Workflow, type LucideIcon } from "lucide-react";
 import { pipelineStages, type PipelineStage } from "@/data/resume";
 import { flowNode, flowStagger } from "@/lib/motion";
@@ -14,18 +14,23 @@ const ICONS: Record<PipelineStage["icon"], LucideIcon> = {
 
 /**
  * THE signature element. Pipeline → Feature → Model → Insight.
- * On load: nodes stagger in, then the connectors draw. When motion is allowed,
- * an iris pulse flows along each connector on a slow ambient loop. Everything
- * collapses to a static final state under `prefers-reduced-motion`.
+ * On load the nodes stagger in; an iris pulse then flows along each connector on
+ * a slow ambient loop.
+ *
+ * Reduced motion is handled two ways, neither of which branches on
+ * `useReducedMotion()` at render time (that caused an SSR/client hydration
+ * mismatch):
+ *   - node entrance → `<MotionConfig reducedMotion="user">` (in Portfolio.tsx)
+ *     drops the transform, leaving only a short opacity fade
+ *   - connector pulse → pure CSS: `motion-safe:` enables it, `motion-reduce:`
+ *     hides it. The connectors are plain, deterministic SVG — no Framer.
  */
 export function PipelineFlow() {
-  const reduced = useReducedMotion();
-
   return (
     <motion.ol
-      variants={reduced ? undefined : flowStagger}
-      initial={reduced ? false : "hidden"}
-      animate={reduced ? false : "show"}
+      variants={flowStagger}
+      initial="hidden"
+      animate="show"
       className="flex flex-col gap-1 sm:flex-row sm:items-stretch"
       aria-label="How I work, from pipeline to insight"
     >
@@ -35,7 +40,7 @@ export function PipelineFlow() {
         return (
           <motion.li
             key={stage.key}
-            variants={reduced ? undefined : flowNode}
+            variants={flowNode}
             className="flex flex-1 flex-col sm:flex-row sm:items-stretch"
           >
             <div className="flex flex-1 flex-col rounded-xl border border-line bg-surface/60 p-4">
@@ -55,7 +60,7 @@ export function PipelineFlow() {
               <p className="mt-1 text-xs leading-relaxed text-muted">{stage.blurb}</p>
             </div>
 
-            {!isLast && <Connector index={i} reduced={Boolean(reduced)} />}
+            {!isLast && <Connector />}
           </motion.li>
         );
       })}
@@ -63,7 +68,7 @@ export function PipelineFlow() {
   );
 }
 
-function Connector({ index, reduced }: { index: number; reduced: boolean }) {
+function Connector() {
   return (
     <div className="flex shrink-0 items-center justify-center py-0.5 sm:py-0" aria-hidden>
       <svg
@@ -72,7 +77,8 @@ function Connector({ index, reduced }: { index: number; reduced: boolean }) {
         preserveAspectRatio="xMidYMid meet"
         className="h-8 w-6 rotate-90 sm:h-6 sm:w-11 sm:rotate-0"
       >
-        <motion.line
+        {/* static rail */}
+        <line
           x1="3"
           y1="12"
           x2="33"
@@ -80,10 +86,8 @@ function Connector({ index, reduced }: { index: number; reduced: boolean }) {
           stroke="rgb(var(--line))"
           strokeWidth="2"
           strokeLinecap="round"
-          initial={reduced ? false : { pathLength: 0, opacity: 0 }}
-          animate={reduced ? false : { pathLength: 1, opacity: 1 }}
-          transition={{ delay: 0.5 + index * 0.16, duration: 0.5, ease: "easeInOut" }}
         />
+        {/* arrowhead */}
         <path
           d="M31 6l7 6-7 6"
           stroke="rgb(var(--accent) / 0.75)"
@@ -91,19 +95,18 @@ function Connector({ index, reduced }: { index: number; reduced: boolean }) {
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        {!reduced && (
-          <line
-            x1="3"
-            y1="12"
-            x2="33"
-            y2="12"
-            stroke="rgb(var(--accent))"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeDasharray="1.5 14"
-            className="motion-safe:animate-flow-dash"
-          />
-        )}
+        {/* ambient iris pulse — CSS only; hidden under prefers-reduced-motion */}
+        <line
+          x1="3"
+          y1="12"
+          x2="33"
+          y2="12"
+          stroke="rgb(var(--accent))"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeDasharray="1.5 14"
+          className="motion-safe:animate-flow-dash motion-reduce:hidden"
+        />
       </svg>
     </div>
   );
