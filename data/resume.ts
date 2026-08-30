@@ -30,15 +30,10 @@ export const profile =
 /* About                                                               */
 /* ------------------------------------------------------------------ */
 
-// About copy — supplied verbatim by Chirag. Keep the voice; don't corporate-ify it.
-// NOTE FOR CHIRAG: the second paragraph ("first got hooked on the idea that a
-// well-designed pipeline can quietly save someone hours...") and the last line
-// about the RAG project are personal takes — tweak the emphasis if that's not
-// quite how you'd put it. Nothing here was invented beyond what you wrote.
 export const about: string[] = [
-  "I build the pipelines nobody sees until they break. Most of my work lives in that unglamorous middle layer — turning messy, unstructured data into something a model or a dashboard can actually trust.",
-  "I moved from Pune to Chicago for my Master's in Computer Science at UIC, which is where I ended up going deeper into the data engineering side than I expected — Databricks, Azure, Snowflake, the whole pipeline stack. Before that, I was building sales forecasting systems at M.S Engineers, which is honestly where I first got hooked on the idea that a well-designed pipeline can quietly save someone hours of manual work every week.",
-  "Outside of the resume-friendly version of this: I like taking a genuinely messy dataset and making it behave. The RAG project below started because I got tired of manually searching through PDFs for one specific paragraph.",
+  "My work starts at the pipeline. I design ingestion and transformation layers — Azure Data Factory, Databricks, Snowflake, PySpark — that pull messy JSON, CSV and web data into governed, well-modeled tables. Medallion architecture, schema governance, data-quality frameworks: the unglamorous foundation that everything downstream depends on.",
+  "On top of that foundation I do the modeling. Time-series forecasting, regression, NLP and LLM workflows that turn the curated data into predictions and insight stakeholders can act on. Because I own both halves, the features my models train on are reliable by construction rather than patched together after the fact.",
+  "I hold an M.S. in Computer Science from the University of Illinois at Chicago and I'm looking for roles where data engineering and data science sit close together.",
 ];
 
 /* ------------------------------------------------------------------ */
