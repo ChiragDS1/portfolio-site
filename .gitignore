@@ -31,3 +31,7 @@ next-env.d.ts
 # editor
 .vscode/
 .idea/
+
+# local static-export preview
+/_preview
+/_ghpages

@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronDown, Download, FileText } from "lucide-react";
 import { resumeVariants } from "@/data/resume";
+import { withBasePath } from "@/lib/site";
 
 /**
  * Secondary CTA. A button that opens a small menu of the three tailored résumé
@@ -119,7 +120,7 @@ export function ResumeMenu() {
                     itemRefs.current[i] = el;
                   }}
                   role="menuitem"
-                  href={variant.href}
+                  href={withBasePath(variant.href)}
                   download
                   tabIndex={-1}
                   onKeyDown={(e) => onMenuKeyDown(e, i)}

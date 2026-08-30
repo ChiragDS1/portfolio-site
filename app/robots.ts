@@ -1,7 +1,5 @@
 import type { MetadataRoute } from "next";
-
-// Keep in sync with SITE_URL in app/layout.tsx.
-const SITE_URL = "https://chiragshinde.dev";
+import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-static";
 

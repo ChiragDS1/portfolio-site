@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { identity } from "@/data/resume";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const plexSans = IBM_Plex_Sans({
@@ -23,8 +24,9 @@ const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
 });
 
-// TODO: set this to your real domain before deploying.
-const SITE_URL = "https://chiragshinde.dev";
+// The absolute URL to the OG image. Must include the base path (GitHub Pages
+// subpath) because `<meta og:image>` needs a fully-qualified URL.
+const OG_IMAGE = `${SITE_URL}/og.png`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -48,7 +50,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: identity.name }],
   creator: identity.name,
-  alternates: { canonical: "/" },
+  alternates: { canonical: `${SITE_URL}/` },
   openGraph: {
     type: "website",
     url: SITE_URL,
@@ -56,14 +58,14 @@ export const metadata: Metadata = {
     description:
       "I build the pipelines that make machine learning possible. Data engineering as the foundation, data science as the specialization.",
     siteName: `${identity.name} — Portfolio`,
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: `${identity.name} portfolio` }],
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${identity.name} portfolio` }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${identity.name} — ${identity.role}`,
     description:
       "I build the pipelines that make machine learning possible. Data engineering as the foundation, data science as the specialization.",
-    images: ["/og.png"],
+    images: [OG_IMAGE],
   },
   robots: { index: true, follow: true },
 };
