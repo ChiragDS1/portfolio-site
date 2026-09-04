@@ -17,6 +17,13 @@ const ICONS: Record<PipelineStage["icon"], LucideIcon> = {
  * On load the nodes stagger in; an iris pulse then flows along each connector on
  * a slow ambient loop.
  *
+ * Layout: a single column below `lg` (1024px) — this is the deliberate fix for
+ * cards squeezing into an unreadable 4-up row on phones *and* tablets; a single
+ * full-width card at any width down to ~360px stays comfortably readable. At
+ * `lg` and up it becomes the one-row diagram; the parent (Hero.tsx) breaks its
+ * wrapper out past the ~46rem reading column at that point so the 4 cards get
+ * real room instead of being squeezed into the text column's width.
+ *
  * Reduced motion is handled two ways, neither of which branches on
  * `useReducedMotion()` at render time (that caused an SSR/client hydration
  * mismatch):
@@ -24,6 +31,10 @@ const ICONS: Record<PipelineStage["icon"], LucideIcon> = {
  *     drops the transform, leaving only a short opacity fade
  *   - connector pulse → pure CSS: `motion-safe:` enables it, `motion-reduce:`
  *     hides it. The connectors are plain, deterministic SVG — no Framer.
+ *
+ * The entrance stagger is driven by `animate="show"` on mount, not by measuring
+ * layout, so it fires identically regardless of which shape (stacked or row)
+ * CSS has resolved to at the current viewport.
  */
 export function PipelineFlow() {
   return (
@@ -31,7 +42,7 @@ export function PipelineFlow() {
       variants={flowStagger}
       initial="hidden"
       animate="show"
-      className="flex flex-col gap-1 sm:flex-row sm:items-stretch"
+      className="flex flex-col gap-1 lg:flex-row lg:items-stretch"
       aria-label="How I work, from pipeline to insight"
     >
       {pipelineStages.map((stage, i) => {
@@ -41,12 +52,12 @@ export function PipelineFlow() {
           <motion.li
             key={stage.key}
             variants={flowNode}
-            className="flex flex-1 flex-col sm:flex-row sm:items-stretch"
+            className="flex flex-1 flex-col lg:flex-row lg:items-stretch"
           >
-            <div className="flex flex-1 flex-col rounded-xl border border-line bg-surface/60 p-4">
+            <div className="flex flex-1 flex-col rounded-xl border border-line bg-surface/60 p-4 sm:p-5">
               <div className="flex items-center justify-between">
                 <span
-                  className={`grid h-8 w-8 place-items-center rounded-md border border-line ${
+                  className={`grid h-9 w-9 place-items-center rounded-md border border-line ${
                     isLast ? "text-accent-2" : "text-accent"
                   }`}
                 >
@@ -54,10 +65,10 @@ export function PipelineFlow() {
                 </span>
                 <span className="font-mono text-xs text-muted">0{i + 1}</span>
               </div>
-              <h3 className="mt-3 font-display text-base font-semibold text-text">
+              <h3 className="mt-3 font-display text-base font-semibold text-text sm:text-lg">
                 {stage.label}
               </h3>
-              <p className="mt-1 text-xs leading-relaxed text-muted">{stage.blurb}</p>
+              <p className="mt-1 text-sm leading-relaxed text-muted lg:text-xs">{stage.blurb}</p>
             </div>
 
             {!isLast && <Connector />}
@@ -70,12 +81,12 @@ export function PipelineFlow() {
 
 function Connector() {
   return (
-    <div className="flex shrink-0 items-center justify-center py-0.5 sm:py-0" aria-hidden>
+    <div className="flex shrink-0 items-center justify-center py-0.5 lg:py-0" aria-hidden>
       <svg
         viewBox="0 0 44 24"
         fill="none"
         preserveAspectRatio="xMidYMid meet"
-        className="h-8 w-6 rotate-90 sm:h-6 sm:w-11 sm:rotate-0"
+        className="h-8 w-6 rotate-90 lg:h-6 lg:w-11 lg:rotate-0"
       >
         {/* static rail */}
         <line

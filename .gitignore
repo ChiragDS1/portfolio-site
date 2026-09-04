@@ -35,3 +35,7 @@ next-env.d.ts
 # local static-export preview
 /_preview
 /_ghpages
+
+# local agent/skill cache (not part of the site)
+.agents/
+skills-lock.json
