@@ -7,20 +7,20 @@ import "./globals.css";
 const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  display: "swap",
+  display: "optional",
   variable: "--font-plex-sans",
 });
 
 const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
-  display: "swap",
+  display: "optional",
   variable: "--font-plex-mono",
 });
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
-  display: "swap",
+  display: "optional",
   variable: "--font-bricolage",
 });
 
@@ -73,22 +73,23 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0B0D17" },
-    { media: "(prefers-color-scheme: light)", color: "#F4F4F9" },
-  ],
+  // Dark is the default theme, so it's the unconditioned value.
+  themeColor: "#0E0D1F",
   width: "device-width",
   initialScale: 1,
 };
 
+/**
+ * Runs before first paint so the theme never flashes.
+ * Dark is the product default regardless of the OS setting — only an explicit
+ * stored choice moves it to light.
+ */
 const themeInitScript = `
 (function () {
   try {
     var stored = localStorage.getItem('theme');
-    var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-    var theme = stored || (prefersLight ? 'light' : 'dark');
-    if (theme === 'dark') document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
+    if (stored === 'light') document.documentElement.classList.remove('dark');
+    else document.documentElement.classList.add('dark');
   } catch (e) {
     document.documentElement.classList.add('dark');
   }
