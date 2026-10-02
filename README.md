@@ -95,7 +95,7 @@ copy didn't.
 One file in **`public/resume/`**:
 
 ```
-Chirag_Shinde_DataEngineer.pdf
+Chirag_Shinde_Resume.pdf
 ```
 
 The hero "Download Resume" button (`components/ResumeButton.tsx`) links directly

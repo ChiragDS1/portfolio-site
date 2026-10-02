@@ -16,7 +16,7 @@ const outDir = join(root, "public", "resume");
 mkdirSync(outDir, { recursive: true });
 
 const files = {
-  "Chirag_Shinde_DataEngineer.pdf": "Chirag Deepak Shinde — Data Engineer (placeholder resume)",
+  "Chirag_Shinde_Resume.pdf": "Chirag Deepak Shinde — Data Engineer (placeholder resume)",
 };
 
 /** Build a single-page PDF with a correct cross-reference table. */

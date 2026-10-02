@@ -117,10 +117,12 @@ export const coreTech: { group: string; items: string[] }[] = [
 /* Résumé                                                              */
 /* ------------------------------------------------------------------ */
 
-/** Single résumé — the Data Engineer version. Path is base-path-prefixed at render. */
+/** Single résumé PDF. Path is base-path-prefixed at render (see lib/site.ts). */
 export const resume = {
   label: "Download Resume",
-  href: "/resume/Chirag_Shinde_DataEngineer.pdf",
+  href: "/resume/Chirag_Shinde_Resume.pdf",
+  /** Filename the browser saves it as. */
+  filename: "Chirag_Shinde_Resume.pdf",
 };
 
 /* ------------------------------------------------------------------ */
