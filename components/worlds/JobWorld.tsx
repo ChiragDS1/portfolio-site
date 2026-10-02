@@ -8,7 +8,6 @@ import { spring } from "@/lib/motion";
 import { usePressed } from "@/lib/usePressed";
 import { StatChips } from "../StatChips";
 import { PipelineRow, type PipelineStep } from "./PipelineRow";
-import { FinanceScene, HealthScene } from "./scenes";
 import { useWorld } from "./WorldContext";
 
 /** Bullets shown before the reader opts into the rest. */
@@ -49,10 +48,7 @@ export function JobWorld({ job, headingId }: { job: ExperienceItem; headingId: s
   const hidden = job.bullets.slice(COLLAPSED);
 
   return (
-    <>
-      {job.world === "experience-bank-of-america" ? <FinanceScene /> : <HealthScene />}
-
-      <div className="relative">
+    <div className="relative">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="mono-label">
             Experience · {index + 1} / {experience.length}
@@ -73,7 +69,7 @@ export function JobWorld({ job, headingId }: { job: ExperienceItem; headingId: s
 
         <div className="mt-5 grid gap-6 lg:grid-cols-[1.15fr_1fr] lg:gap-10">
           {/* ---- job card ---- */}
-          <div className="glass rounded-2xl p-5 sm:p-6">
+          <div className="glass order-last rounded-2xl p-5 sm:p-6 lg:order-none">
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
               <p className="mono-label">{job.period}</p>
               {job.current && (
@@ -141,7 +137,9 @@ export function JobWorld({ job, headingId }: { job: ExperienceItem; headingId: s
           </div>
 
           {/* ---- pipeline + figures ---- */}
-          <div className="space-y-5">
+          {/* On phones these lead, so the scene and the numbers land before the
+              bullets; from `lg` the two-column reading order takes over. */}
+          <div className="order-first space-y-5 lg:order-none">
             <div>
               <p className="mono-label mb-2">Pipeline</p>
               <PipelineRow
@@ -151,9 +149,8 @@ export function JobWorld({ job, headingId }: { job: ExperienceItem; headingId: s
             </div>
             <StatChips chips={job.chips} />
           </div>
-        </div>
       </div>
-    </>
+    </div>
   );
 }
 

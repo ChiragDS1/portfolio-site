@@ -48,7 +48,7 @@ export function HomeWorld({ headingId }: { headingId: string }) {
   }
 
   return (
-    <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
+    <div className="grid items-center gap-6 sm:gap-8 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
       {/* ---- text column ---- */}
       <div className="order-2 lg:order-1">
         <p className="mono-label">
@@ -64,14 +64,14 @@ export function HomeWorld({ headingId }: { headingId: string }) {
         </h1>
 
         <p
-          className="mt-5 max-w-xl leading-relaxed"
+          className="mt-4 max-w-xl leading-relaxed"
           style={{ color: "rgb(var(--muted))", fontSize: "clamp(1rem, 0.9rem + 0.4vw, 1.2rem)" }}
         >
           {identity.tagline}
         </p>
 
         {/* On phones the bubbles stop being spatial and become plain buttons. */}
-        <ul className="mt-7 grid gap-2 sm:max-w-sm lg:hidden">
+        <ul className="mt-5 grid gap-2 sm:max-w-sm lg:hidden">
           {BUBBLES.map((b) => (
             <li key={b.id}>
               <BubbleButton world={b.id} label={b.label} onSelect={() => enter(b.id)} stacked />
@@ -79,7 +79,7 @@ export function HomeWorld({ headingId }: { headingId: string }) {
           ))}
         </ul>
 
-        <div className="mt-8">
+        <div className="mt-4 sm:mt-8">
           <ContactRow />
         </div>
       </div>
@@ -88,6 +88,7 @@ export function HomeWorld({ headingId }: { headingId: string }) {
       <div className="relative order-1 lg:order-2">
         <motion.div
           ref={sceneRef}
+          className="mx-auto max-w-[14rem] sm:max-w-none"
           animate={zoom ? { scale: 1.35, opacity: 0.35 } : { scale: 1, opacity: 1 }}
           transition={springBubble}
           style={{ transformOrigin: zoom ? `${zoom.x} ${zoom.y}` : "50% 50%" }}

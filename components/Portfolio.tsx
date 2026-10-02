@@ -13,6 +13,7 @@ import { WorldSection } from "./worlds/WorldSection";
 import { HomeWorld } from "./worlds/HomeWorld";
 import { AboutWorld } from "./worlds/AboutWorld";
 import { JobWorld } from "./worlds/JobWorld";
+import { FinanceScene, HealthScene } from "./worlds/scenes";
 import { ProjectsWorld } from "./worlds/ProjectsWorld";
 
 /**
@@ -53,13 +54,13 @@ function Shell() {
         </WorldSection>
 
         {boa && (
-          <WorldSection world={boaWorld} headingId="boa-heading">
+          <WorldSection world={boaWorld} headingId="boa-heading" scene={<FinanceScene />}>
             <JobWorld job={boa} headingId="boa-heading" />
           </WorldSection>
         )}
 
         {acc && (
-          <WorldSection world={accWorld} headingId="acc-heading">
+          <WorldSection world={accWorld} headingId="acc-heading" scene={<HealthScene />}>
             <JobWorld job={acc} headingId="acc-heading" />
           </WorldSection>
         )}

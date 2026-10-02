@@ -19,15 +19,19 @@
   --text: 29 26 46;        /* #1D1A2E */
   --muted: 91 88 115;      /* #5B5873 */
   --glass: 255 255 255;
-  --glass-a: 0.72;
+  --glass-a: 0.88;
   --glass-line: 255 255 255;
   --glass-line-a: 0.9;
   --ghost: 255 255 255;
-  --ghost-a: 0.85;         /* ghost words read as a lighter tint on light */
+  --ghost-a: 0.6;          /* calm enough never to compete with body text */
   --scrim: 238 240 251;
   /* Usage dots in the toolkit grid — one per experience world. */
   --dot-boa: 47 95 208;    /* #2F5FD0 */
   --dot-acc: 31 138 102;   /* #1F8A66 */
+  /* Footprint of the fixed world switcher: 44px pill + 16px offset + 16px
+     breathing room. Every world reserves this much at the bottom so content
+     can always come to rest clear of it. */
+  --switcher-clear: 76px;
   color-scheme: light;
 }
 
@@ -39,7 +43,7 @@
   --glass-line: 52 50 106; /* #34326A */
   --glass-line-a: 1;
   --ghost: 255 255 255;
-  --ghost-a: 0.09;
+  --ghost-a: 0.07;
   --scrim: 14 13 31;
   --dot-boa: 110 155 255;  /* #6E9BFF */
   --dot-acc: 127 227 182;  /* #7FE3B6 */

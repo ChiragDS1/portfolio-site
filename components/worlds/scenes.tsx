@@ -23,14 +23,14 @@ export function FinanceScene() {
   return (
     <div ref={ref} aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* ticker strip */}
-      {/* Pinned into the section's top padding with a fixed offset rather than a
-          percentage, so it can't drift into the content on a tall world. */}
-      <div className="absolute inset-x-0 top-6 overflow-hidden sm:top-10">
+      {/* Pinned to the world's top edge. The content below is bounded by the
+          section's top padding, so the two can never meet. */}
+      <div className="absolute inset-x-0 top-0 overflow-hidden">
         <div
           className={`flex w-max whitespace-nowrap font-mono text-[0.75rem] tracking-[0.18em] ${
             active ? "motion-safe:animate-ticker" : ""
           }`}
-          style={{ color: "rgb(var(--w-accent) / 0.28)" }}
+          style={{ color: "rgb(var(--muted))" }}
         >
           {/* duplicated so the -50% translate loops seamlessly */}
           <span>{ticker.repeat(8)}</span>

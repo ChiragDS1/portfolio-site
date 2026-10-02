@@ -15,9 +15,13 @@ export interface PipelineStep {
  * The stage row for an experience world: Kafka → S3 → Spark → Redis → Alerts,
  * or HL7 → Data Factory → Databricks → FHIR R4 → Synapse.
  *
+ * Labels are never truncated. Below `sm` the row stacks, so each step gets the
+ * full width; from `sm` up it's a row and the longer names wrap to two lines.
+ * They're set in the body face rather than uppercase mono — mono at this size
+ * is roughly 40% wider per character, which is what forced "DATABR…" before.
+ *
  * Packets travel the connectors one at a time. On the finance row an amber
- * "flagged" packet occasionally leaves the line and pulses an alert marker —
- * the one moment of narrative in an otherwise quiet strip.
+ * "flagged" packet occasionally leaves the line and pulses an alert marker.
  */
 export function PipelineRow({
   steps,
@@ -29,29 +33,25 @@ export function PipelineRow({
   const { ref, active } = useSceneActive<HTMLUListElement>();
 
   return (
-    <ul
-      ref={ref}
-      aria-hidden
-      className="flex flex-wrap items-stretch justify-center gap-y-2 sm:flex-nowrap"
-    >
+    <ul ref={ref} aria-hidden className="flex flex-col items-stretch sm:flex-row">
       {steps.map((step, i) => (
-        <li key={step.label} className="flex min-w-0 flex-1 items-center">
+        <li key={step.label} className="flex min-w-0 flex-1 flex-col sm:flex-row sm:items-center">
           <div
-            className="glass flex min-w-0 flex-1 flex-col items-center gap-1.5 rounded-xl px-2 py-2.5"
+            className="glass flex min-w-0 flex-1 items-center gap-2 rounded-xl px-3 py-2.5 sm:flex-col sm:gap-1.5 sm:px-1.5 sm:py-3"
             style={{
               color: step.alert ? "rgb(var(--w-alert-text))" : "rgb(var(--text))",
               boxShadow: step.alert ? "inset 0 0 0 1px rgb(var(--w-alert) / 0.5)" : undefined,
             }}
           >
             <StepMark step={step} />
-            <span className="w-full truncate text-center font-mono text-xs uppercase tracking-[0.08em]">
+            {/* Two lines' worth of height is reserved from `sm` up so a wrapped
+                label can't make one tile taller than its neighbours. */}
+            <span className="min-w-0 text-left text-xs leading-tight sm:min-h-[2.2em] sm:text-center">
               {step.label}
             </span>
           </div>
 
-          {i < steps.length - 1 && (
-            <Connector index={i} active={active} flagged={flagged && i === steps.length - 2} />
-          )}
+          {i < steps.length - 1 && <Connector index={i} active={active} flagged={flagged && i === steps.length - 2} />}
         </li>
       ))}
     </ul>
@@ -96,8 +96,15 @@ function Connector({
   flagged: boolean;
 }) {
   return (
-    <span className="flex w-5 shrink-0 items-center justify-center sm:w-7">
-      <svg viewBox="0 0 44 24" className="h-4 w-full" fill="none" aria-hidden>
+    // Rotated a quarter turn while the row is stacked, so the packet travels
+    // downward on phones without needing a second animation.
+    <span className="flex shrink-0 items-center justify-center self-center py-0.5 sm:w-5 sm:py-0">
+      <svg
+        viewBox="0 0 44 24"
+        className="h-5 w-4 rotate-90 sm:h-4 sm:w-full sm:rotate-0"
+        fill="none"
+        aria-hidden
+      >
         <line
           x1="3"
           y1="12"
