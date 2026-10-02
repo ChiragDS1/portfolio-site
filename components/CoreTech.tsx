@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BarChart3, Boxes, Cloud, Layers, type LucideIcon } from "lucide-react";
+import { Boxes, Cloud, Network, type LucideIcon } from "lucide-react";
 import { coreTech } from "@/data/resume";
 import { techIconPaths } from "@/data/techIcons";
 import { reveal, revealStagger, scrollViewport } from "@/lib/motion";
@@ -9,9 +9,10 @@ import { SectionHeading } from "./SectionHeading";
 
 // Tools without a brand mark in simple-icons fall back to a generic lucide icon.
 const FALLBACK: Record<string, LucideIcon> = {
-  "Azure Data Factory": Cloud,
-  "Delta Lake": Layers,
-  "Power BI": BarChart3,
+  // Microsoft brand marks were removed from simple-icons upstream.
+  Azure: Cloud,
+  // Pinecone has no simple-icons mark.
+  Pinecone: Network,
 };
 
 function TechIcon({ name }: { name: string }) {

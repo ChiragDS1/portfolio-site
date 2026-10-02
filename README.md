@@ -1,9 +1,9 @@
 # Chirag Shinde — Portfolio
 
-A single-page portfolio built around one coherent identity: **Data Engineer &
-Data Scientist** — data engineering as the foundation, data science / ML as the
-specialization built on top. The hero's signature element is an animated
-**Pipeline → Feature → Model → Insight** flow.
+A single-page portfolio built around one coherent identity: **Data Engineer** —
+streaming and batch pipelines for regulated industries (real-time fraud/AML in
+banking, HL7-to-FHIR interoperability in healthcare). The hero's signature
+element is an animated **Ingest → Stream → Govern → Serve** flow.
 
 - **Next.js 14** (App Router) + **TypeScript**
 - **Tailwind CSS** — "Iris" design tokens in `app/globals.css` / `tailwind.config.ts`
@@ -299,9 +299,9 @@ components/
   Portfolio.tsx     section order + <MotionConfig reducedMotion="user">
   Nav.tsx           sticky nav, scroll-spy, mobile menu
   Hero.tsx          staggered load: name / role / tagline / PipelineFlow / ResumeButton
-  PipelineFlow.tsx  ← signature element (Pipeline → Feature → Model → Insight)
+  PipelineFlow.tsx  ← signature element (Ingest → Stream → Govern → Serve)
   StatBar.tsx  CountUp.tsx     scroll-triggered count-ups
-  CoreTech.tsx      brand-logo strip (DE / DS), monochrome
+  CoreTech.tsx      brand-logo strip (streaming / cloud / MLOps), monochrome
   ResumeButton.tsx  single résumé download link (Data Engineer PDF)
   About.tsx  Experience.tsx  Projects.tsx  Skills.tsx  Education.tsx  Contact.tsx
   ThemeToggle.tsx  Reveal.tsx  SectionHeading.tsx  GridBackdrop.tsx

@@ -1,27 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#0B0F14"/>
-  <g stroke="#232E3B" stroke-width="1">
-    <path d="M0 40H1200M0 120H1200M0 200H1200M0 280H1200M0 360H1200M0 440H1200M0 520H1200M0 600H1200"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif">
+  <!-- Iris palette: bg #0B0D17 · surface #141826 · line #242A42 · text #EDEEF7 · muted #9CA0BF · accent #8B7CF6 · accent-2 #F5B049 -->
+  <rect width="1200" height="630" fill="#0B0D17"/>
+
+  <!-- faint data-sheet grid -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#9CA0BF" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <text x="80" y="132" font-family="'IBM Plex Mono','Courier New',monospace" font-size="24" fill="#9CA0BF" letter-spacing="3">CHICAGO, IL</text>
+  <text x="80" y="226" font-size="78" fill="#EDEEF7" font-weight="600">Chirag Deepak Shinde</text>
+  <text x="80" y="290" font-size="40" fill="#8B7CF6" font-weight="500">Data Engineer</text>
+  <text x="80" y="336" font-family="'IBM Plex Mono','Courier New',monospace" font-size="23" fill="#9CA0BF" letter-spacing="2">3+ YEARS · BANKING &amp; HEALTHCARE</text>
+
+  <!-- Ingest → Stream → Govern → Serve -->
+  <g font-family="'IBM Plex Sans',Arial,sans-serif" font-size="25" font-weight="600">
+    <rect x="80" y="432" width="236" height="88" rx="14" fill="#141826" stroke="#242A42"/>
+    <text x="104" y="470" fill="#9CA0BF" font-family="'IBM Plex Mono',monospace" font-size="17">01</text>
+    <text x="104" y="502" fill="#EDEEF7">Ingest</text>
+
+    <rect x="346" y="432" width="236" height="88" rx="14" fill="#141826" stroke="#242A42"/>
+    <text x="370" y="470" fill="#9CA0BF" font-family="'IBM Plex Mono',monospace" font-size="17">02</text>
+    <text x="370" y="502" fill="#EDEEF7">Stream</text>
+
+    <rect x="612" y="432" width="236" height="88" rx="14" fill="#141826" stroke="#242A42"/>
+    <text x="636" y="470" fill="#9CA0BF" font-family="'IBM Plex Mono',monospace" font-size="17">03</text>
+    <text x="636" y="502" fill="#EDEEF7">Govern</text>
+
+    <rect x="878" y="432" width="236" height="88" rx="14" fill="#141826" stroke="#242A42"/>
+    <text x="902" y="470" fill="#9CA0BF" font-family="'IBM Plex Mono',monospace" font-size="17">04</text>
+    <text x="902" y="502" fill="#F5B049">Serve</text>
   </g>
-  <g stroke="#4DD0A7" stroke-width="2.5" fill="none" stroke-dasharray="6 10" opacity="0.5">
-    <path d="M120 300 C 260 300 260 220 400 220"/>
-    <path d="M120 300 C 260 300 260 400 400 400"/>
-    <path d="M400 220 C 540 220 540 310 680 310"/>
-    <path d="M400 400 C 540 400 540 310 680 310"/>
-  </g>
-  <g fill="#0B0F14" stroke="#4DD0A7" stroke-width="2.5">
-    <circle cx="120" cy="300" r="8"/><circle cx="400" cy="220" r="8"/>
-    <circle cx="400" cy="400" r="8"/><circle cx="680" cy="310" r="8"/>
-  </g>
-  <text x="80" y="150" font-family="'Space Grotesk','Arial',sans-serif" font-size="34" fill="#8A97A8" font-weight="500">CHICAGO, IL</text>
-  <text x="80" y="230" font-family="'Space Grotesk','Arial',sans-serif" font-size="76" fill="#E4E9F0" font-weight="600">Chirag Deepak Shinde</text>
-  <text x="80" y="300" font-family="'JetBrains Mono','Courier New',monospace" font-size="30" fill="#4DD0A7">Data Engineer · Data Analyst · Data Scientist</text>
-  <g font-family="'JetBrains Mono','Courier New',monospace" font-size="26">
-    <rect x="80" y="470" width="150" height="54" rx="10" fill="#4DD0A7" fill-opacity="0.15" stroke="#4DD0A7" stroke-opacity="0.45"/>
-    <text x="118" y="505" fill="#4DD0A7">DE</text>
-    <rect x="250" y="470" width="150" height="54" rx="10" fill="none" stroke="#232E3B"/>
-    <text x="288" y="505" fill="#8A97A8">DA</text>
-    <rect x="420" y="470" width="150" height="54" rx="10" fill="none" stroke="#232E3B"/>
-    <text x="458" y="505" fill="#8A97A8">DS</text>
+
+  <!-- connectors -->
+  <g stroke="#8B7CF6" stroke-opacity="0.75" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M322 476h16M332 469l8 7-8 7"/>
+    <path d="M588 476h16M598 469l8 7-8 7"/>
+    <path d="M854 476h16M864 469l8 7-8 7"/>
   </g>
 </svg>

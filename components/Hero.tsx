@@ -41,6 +41,10 @@ export function Hero() {
             {identity.role}
           </motion.p>
 
+          <motion.p variants={heroItem} className="mono-label mt-1.5">
+            {identity.roleMeta}
+          </motion.p>
+
           <motion.p
             variants={heroItem}
             className="mt-4 max-w-xl text-[clamp(1rem,0.85rem+0.6vw,1.25rem)] leading-relaxed text-muted"

@@ -34,6 +34,19 @@ const config: Config = {
       },
       keyframes: {
         "flow-dash": { to: { strokeDashoffset: "-16" } },
+        /**
+         * One "data packet" travelling the 30-user-unit rail of a connector.
+         * The move happens in the first third of the cycle; the rest of the
+         * cycle it sits invisible at the end, so staggering three connectors by
+         * 1/3 of the duration each gives exactly one visible dot at a time.
+         */
+        "flow-packet": {
+          "0%": { transform: "translateX(0)", opacity: "0" },
+          "4%": { opacity: "0.85" },
+          "29%": { opacity: "0.85" },
+          "33%": { transform: "translateX(30px)", opacity: "0" },
+          "100%": { transform: "translateX(30px)", opacity: "0" },
+        },
         "flow-pulse": {
           "0%, 100%": { opacity: "0.25" },
           "50%": { opacity: "0.9" },
@@ -41,6 +54,7 @@ const config: Config = {
       },
       animation: {
         "flow-dash": "flow-dash 1.1s linear infinite",
+        "flow-packet": "flow-packet 3.6s linear infinite",
         "flow-pulse": "flow-pulse 3s ease-in-out infinite",
       },
     },

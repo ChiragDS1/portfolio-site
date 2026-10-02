@@ -101,3 +101,15 @@
     @apply rounded-xl border border-line bg-surface/60;
   }
 }
+
+/*
+ * The Experience timeline fill is driven by a Framer motion value (scaleY tied
+ * to scroll). Under reduced motion we don't want a scroll-linked animation at
+ * all, so the inline transform is overridden and the line simply renders full
+ * height, static.
+ */
+@media (prefers-reduced-motion: reduce) {
+  [data-timeline-fill] {
+    transform: none !important;
+  }
+}

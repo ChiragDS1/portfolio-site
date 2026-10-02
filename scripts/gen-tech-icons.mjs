@@ -14,21 +14,25 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 // name shown in the UI  ->  simple-icons slug
 const WANT = {
+  // Streaming & Processing
+  "Apache Kafka": "apachekafka",
   "Apache Spark": "apachespark",
-  Snowflake: "snowflake",
-  Databricks: "databricks",
   "Apache Airflow": "apacheairflow",
   dbt: "dbt",
-  Docker: "docker",
+  Databricks: "databricks",
+  // Cloud & Storage  (Azure has no simple-icons mark — Microsoft brands were
+  // removed upstream, so it falls back to a lucide icon in CoreTech.tsx)
+  AWS: "amazonwebservices",
+  Snowflake: "snowflake",
   PostgreSQL: "postgresql",
-  "GitHub Actions": "githubactions",
-  Python: "python",
-  pandas: "pandas",
-  NumPy: "numpy",
-  "scikit-learn": "scikitlearn",
-  "Hugging Face": "huggingface",
-  "Google Gemini": "googlegemini",
+  Redis: "redis",
+  MongoDB: "mongodb",
+  // MLOps & AI  (Pinecone has no simple-icons mark → lucide fallback)
+  Docker: "docker",
+  Kubernetes: "kubernetes",
+  Terraform: "terraform",
   MLflow: "mlflow",
+  LangChain: "langchain",
 };
 
 const out = {};

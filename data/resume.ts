@@ -2,9 +2,9 @@
  * Single source of truth for all site copy.
  * Edit this file to change wording — components never hardcode content.
  *
- * One coherent identity: Data Engineer & Data Scientist. Data engineering is the
- * foundation; data science / ML is the specialization built on top of it. Every
- * section tells that one story.
+ * One coherent identity: Data Engineer. Streaming and batch pipelines for
+ * regulated industries — real-time fraud/AML in banking, HL7-to-FHIR
+ * interoperability in healthcare. Every section tells that one story.
  */
 
 /* ------------------------------------------------------------------ */
@@ -13,27 +13,30 @@
 
 export const identity = {
   name: "Chirag Deepak Shinde",
-  role: "Data Engineer & Data Scientist",
+  role: "Data Engineer",
+  /** Small secondary line rendered under the role in the hero. */
+  roleMeta: "3+ years · Banking & Healthcare",
   tagline:
-    "I build the pipelines that make machine learning possible — turning raw, unstructured data into reliable, production-grade platforms and insight.",
+    "I build streaming and batch pipelines for regulated industries: real-time fraud and AML detection in banking, HL7-to-FHIR interoperability in healthcare.",
   location: "Chicago, IL",
-  email: "cshin29@uic.edu",
+  email: "chiragshinde2702@gmail.com",
   linkedinUrl: "https://www.linkedin.com/in/chirag-d-shinde",
   linkedinLabel: "linkedin.com/in/chirag-d-shinde",
   githubUrl: "https://github.com/", // TODO: replace with your GitHub profile URL
 } as const;
 
 export const profile =
-  "Data Engineer & Data Scientist experienced in building end-to-end ETL pipelines and ML-ready data platforms. Delivered automated Azure Data Factory and Databricks pipelines that reduced manual research effort by 60%, and built predictive models reaching 85% forecast accuracy through medallion-style Snowflake pipelines and Python ML workflows. Focused on turning raw, unstructured data into reliable, production-grade pipelines and insight.";
+  "Data Engineer with 3+ years building streaming and batch pipelines across banking and healthcare: real-time fraud and AML detection, HL7-to-FHIR interoperability, and production-grade solutions that strengthen compliance and decision-making.";
 
 /* ------------------------------------------------------------------ */
 /* About                                                               */
 /* ------------------------------------------------------------------ */
 
 export const about: string[] = [
-  "My work starts at the pipeline. I design ingestion and transformation layers — Azure Data Factory, Databricks, Snowflake, PySpark — that pull messy JSON, CSV and web data into governed, well-modeled tables. Medallion architecture, schema governance, data-quality frameworks: the unglamorous foundation that everything downstream depends on.",
-  "On top of that foundation I do the modeling. Time-series forecasting, regression, NLP and LLM workflows that turn the curated data into predictions and insight stakeholders can act on. Because I own both halves, the features my models train on are reliable by construction rather than patched together after the fact.",
-  "I hold an M.S. in Computer Science from the University of Illinois at Chicago and I'm looking for roles where data engineering and data science sit close together.",
+  "Data Engineer with 3+ years building streaming and batch pipelines across banking and healthcare: real-time fraud and AML detection, HL7-to-FHIR interoperability, and production-grade solutions that strengthen compliance and decision-making.",
+  "I design distributed ETL and ELT pipelines with Python, SQL, Apache Spark, Kafka, and Airflow across AWS and Azure, turning raw data into clean, high-quality datasets for enterprise analytics and reporting.",
+  "I also integrate ML and LLM-powered solutions like RAG and vector search into pipelines, automating insight extraction and cutting manual effort in regulated environments.",
+  "I hold an M.S. in Computer Science from the University of Illinois at Chicago.",
 ];
 
 /* ------------------------------------------------------------------ */
@@ -45,32 +48,50 @@ export interface PipelineStage {
   label: string;
   blurb: string;
   /** icon id resolved in components/PipelineFlow.tsx */
-  icon: "pipeline" | "feature" | "model" | "insight";
+  icon: "ingest" | "stream" | "govern" | "serve";
 }
 
 export const pipelineStages: PipelineStage[] = [
-  { key: "pipeline", label: "Pipeline", blurb: "Ingest raw sources into governed tables", icon: "pipeline" },
-  { key: "feature", label: "Feature", blurb: "Validate and shape ML-ready features", icon: "feature" },
-  { key: "model", label: "Model", blurb: "Train forecasting and NLP models", icon: "model" },
-  { key: "insight", label: "Insight", blurb: "Serve predictions and dashboards", icon: "insight" },
+  { key: "ingest", label: "Ingest", blurb: "Kafka events into an S3 data lake", icon: "ingest" },
+  { key: "stream", label: "Stream", blurb: "Spark Structured Streaming + Redis lookups", icon: "stream" },
+  { key: "govern", label: "Govern", blurb: "Data-quality checks, HIPAA de-identification", icon: "govern" },
+  { key: "serve", label: "Serve", blurb: "Real-time fraud alerts and FHIR datasets", icon: "serve" },
 ];
 
 /* ------------------------------------------------------------------ */
 /* Stat bar — real numbers from the resume, animated as count-ups      */
 /* ------------------------------------------------------------------ */
 
-export interface Stat {
-  value: number;
-  suffix: string;
-  trend: "up" | "down";
-  label: string;
-}
+/**
+ * Two shapes of stat:
+ *  - "count"      → counts 0 → value, then renders `suffix`. `revealSuffix`
+ *                   holds the suffix back until the count lands (used by 5M+).
+ *  - "transition" → a before/after: `before` strikes through, then `after`
+ *                   is revealed (used by the fraud-alert latency figure).
+ */
+export type Stat =
+  | {
+      kind: "count";
+      value: number;
+      suffix: string;
+      /** Omit for a plain volume figure that isn't an increase/decrease. */
+      trend?: "up" | "down";
+      /** Hold the suffix back until the count finishes. */
+      revealSuffix?: boolean;
+      label: string;
+    }
+  | {
+      kind: "transition";
+      before: string;
+      after: string;
+      label: string;
+    };
 
 export const stats: Stat[] = [
-  { value: 60, suffix: "%", trend: "down", label: "manual research effort" },
-  { value: 85, suffix: "%", trend: "up", label: "forecast accuracy" },
-  { value: 70, suffix: "%", trend: "down", label: "document search time" },
-  { value: 30, suffix: "%", trend: "up", label: "processing efficiency" },
+  { kind: "count", value: 5, suffix: "M+", revealSuffix: true, label: "daily transactions processed" },
+  { kind: "transition", before: "~15 min", after: "real time", label: "fraud-alert latency" },
+  { kind: "count", value: 25, suffix: "%", trend: "down", label: "lower pipeline operating cost" },
+  { kind: "count", value: 45, suffix: "%", trend: "down", label: "less manual data-integration effort" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -79,32 +100,16 @@ export const stats: Stat[] = [
 
 export const coreTech: { group: string; items: string[] }[] = [
   {
-    group: "Data Engineering",
-    items: [
-      "Azure Data Factory",
-      "Databricks",
-      "Snowflake",
-      "Apache Spark",
-      "Apache Airflow",
-      "dbt",
-      "Delta Lake",
-      "PostgreSQL",
-      "Docker",
-      "GitHub Actions",
-    ],
+    group: "Streaming & Processing",
+    items: ["Apache Kafka", "Apache Spark", "Apache Airflow", "dbt", "Databricks"],
   },
   {
-    group: "Data Science & ML",
-    items: [
-      "Python",
-      "pandas",
-      "NumPy",
-      "scikit-learn",
-      "Hugging Face",
-      "Google Gemini",
-      "MLflow",
-      "Power BI",
-    ],
+    group: "Cloud & Storage",
+    items: ["AWS", "Azure", "Snowflake", "PostgreSQL", "Redis", "MongoDB"],
+  },
+  {
+    group: "MLOps & AI",
+    items: ["Docker", "Kubernetes", "Terraform", "MLflow", "LangChain", "Pinecone"],
   },
 ];
 
@@ -130,77 +135,74 @@ export interface SkillGroup {
 
 export const skillGroups: SkillGroup[] = [
   {
-    id: "eng-cloud",
-    title: "Data Engineering & Cloud",
+    id: "languages",
+    title: "Programming Languages",
+    items: ["Python", "SQL", "Scala", "Java", "Bash"],
+  },
+  {
+    id: "data-eng",
+    title: "Data Engineering",
+    items: [
+      "ETL/ELT pipeline design",
+      "Apache Spark",
+      "dbt",
+      "Data warehousing",
+      "Data modeling",
+      "Data quality frameworks",
+    ],
+  },
+  {
+    id: "orchestration",
+    title: "Orchestration & Streaming",
+    items: [
+      "Apache Airflow",
+      "Apache Kafka",
+      "Spark Structured Streaming",
+      "Batch & real-time processing",
+    ],
+  },
+  {
+    id: "cloud",
+    title: "Cloud Platforms",
+    items: [
+      "AWS (S3, Lambda, EMR, Glue, SageMaker)",
+      "Azure (Data Factory, Synapse, Azure ML)",
+    ],
+  },
+  {
+    id: "databases",
+    title: "Databases & Warehouses",
+    items: ["PostgreSQL", "MySQL", "MongoDB", "Snowflake", "Redis", "Pinecone / vector DBs"],
+  },
+  {
+    id: "mlops",
+    title: "Platforms & MLOps",
     items: [
       "Databricks",
-      "ETL / ELT",
-      "Data Modeling",
-      "Data Warehousing",
-      "Azure Data Factory",
-      "Delta Lake",
-      "Azure Synapse",
-      "Azure ADLS Gen2",
-      "Snowflake",
-      "Snowpark",
-    ],
-  },
-  {
-    id: "bigdata",
-    title: "Big Data & Programming",
-    items: [
-      "PySpark",
-      "Apache Spark",
-      "SQL",
-      "Python (Pandas, NumPy, Scikit-learn)",
-      "Batch & Streaming Systems",
-      "Distributed Processing",
-    ],
-  },
-  {
-    id: "devops",
-    title: "Orchestration & DevOps",
-    items: [
-      "Dagster",
-      "Airflow",
-      "dbt",
-      "Great Expectations",
       "Docker",
-      "CI/CD (GitHub Actions)",
-      "Git",
+      "Kubernetes",
       "MLflow",
+      "Terraform",
+      "CI/CD",
+      "Model deployment & monitoring",
     ],
   },
   {
-    id: "ml-ai",
-    title: "Machine Learning & AI",
+    id: "llm",
+    title: "LLM / Generative AI",
     items: [
-      "Scikit-learn",
-      "NLP",
-      "RoBERTa",
-      "SentenceTransformers",
-      "LLM Workflows (Gemini / OpenAI APIs)",
-      "RAG Architectures",
-      "Vector Databases (FAISS, PostgreSQL)",
+      "RAG pipelines",
+      "LangChain",
+      "Embeddings",
+      "Vector search",
+      "Prompt engineering",
+      "LLM evaluation",
     ],
   },
   {
-    id: "stats",
-    title: "Statistics & Analytics",
-    items: [
-      "Statistical Modeling",
-      "Regression (OLS, Negative Binomial)",
-      "ANOVA",
-      "Time-Series Forecasting",
-      "A/B Testing",
-      "EDA",
-      "Hypothesis Testing",
-    ],
-  },
-  {
-    id: "viz",
-    title: "Visualization",
-    items: ["Power BI (DAX, Semantic Modeling)", "Streamlit", "PostgreSQL"],
+    id: "tools",
+    title: "Version Control & Tools",
+    items: ["Git", "GitHub/GitLab", "Jira", "Linux"],
   },
 ];
 
@@ -214,35 +216,43 @@ export interface ExperienceItem {
   period: string;
   title: string;
   project: string;
+  /** Marks the role as ongoing — renders a "Current" pill next to the dates. */
+  current?: boolean;
   bullets: string[];
 }
 
 export const experience: ExperienceItem[] = [
   {
-    company: "University of Illinois at Chicago",
+    company: "Bank of America",
     location: "Chicago, IL",
-    period: "Sep 2025 – May 2026",
-    title: "Graduate Research Assistant",
-    project: "Board Director Mortality Study & Research Outreach Automation",
+    period: "Sep 2025 – Present",
+    title: "Data Engineer",
+    project: "Fraud & AML Streaming Platform",
+    current: true,
     bullets: [
-      "Reduced manual research / data-collection effort by 60% by engineering automated ETL pipelines with Azure Data Factory and the Gemini Flash LLM, extracting unstructured JSON/CSV web data into Azure Data Lake (ADLS Gen2).",
-      "Improved dataset reliability and quality by building automated PySpark validation and transformation workflows on Azure Databricks, using Unity Catalog for governance and schema control.",
-      "Accelerated analytics by profiling datasets, mapping entity relationships, and optimizing a normalized data model — cutting SQL query runtime and enabling direct integration with Azure Synapse and Power BI.",
-      "Increased outreach workflow scalability by 50% by automating alumni / startup campaign pipelines with Power Automate integrated with Azure SQL.",
+      "Developed a scalable transaction streaming pipeline supporting fraud and AML monitoring, processing 5M+ daily transactions across multiple business lines, enabling near-instant suspicious-activity detection and real-time analytics for enterprise risk and compliance teams.",
+      "Built fault-tolerant, distributed Apache Kafka ingestion for high-throughput transaction events, persisting raw data to Amazon S3 as a centralized data lake so batch backfills and streaming jobs read one shared source.",
+      "Engineered modular ETL and ELT pipelines and data models with SQL and Python, structuring raw transaction, customer, and account records into clean, standardized datasets that strengthened the accuracy of downstream fraud and AML detection logic.",
+      "Moved fraud scoring from batch to Spark Structured Streaming, integrating Redis for low-latency feature lookups, reducing fraud-alert latency from roughly 15 minutes to near real time.",
+      "Orchestrated distributed data-processing jobs with Apache Airflow on AWS, using AWS Lambda for event-driven triggers, lowering operational costs by 25% through improved pipeline scheduling.",
+      "Automated data-quality checks (schema, null, and range validation) in CI/CD pipelines and tracked model versions, parameters, and metrics with MLflow for reproducible deployments and end-to-end observability.",
+      "Built the data pipeline feeding an LLM alert-summarization tool, preparing and indexing case data for retrieval-augmented generation, adopted by fraud and compliance teams to speed up alert triage.",
     ],
   },
   {
-    company: "M.S Engineers",
+    company: "Accenture",
     location: "Pune, India",
-    period: "May 2023 – Jul 2024",
+    period: "Jun 2022 – Jul 2024",
     title: "Data Engineer",
-    project: "Sales Forecasting & Analytics Data Platform",
+    project: "Healthcare Data Ingestion & FHIR Interoperability",
     bullets: [
-      "Improved data processing efficiency by 30% by building ETL pipelines with PySpark / SQL in Snowflake (Snowpark) using a medallion-style architecture (Bronze / Silver / Gold).",
-      "Increased sales forecast accuracy to 85% (a 15% improvement) via an Azure Event Hubs ingestion / transformation pipeline feeding clean time-series data to Python ML models.",
-      "Designed Star Schema data models and data marts supporting scalable BI reporting and KPI analysis.",
-      "Reduced manual deployment overhead by 50% with a containerized CI/CD DataOps pipeline (Docker, GitHub Actions, Git) automating schema validation and model retraining.",
-      "Improved production data reliability with a Spark SQL quality framework — null checks, schema-drift detection, statistical threshold validation, and automated A/B comparisons.",
+      "Implemented an end-to-end healthcare data ingestion and FHIR interoperability pipeline, reducing manual data-integration effort by 45% and enabling standardized, compliant patient-record exchange across clinical systems for a large US healthcare client.",
+      "Delivered configurable Azure Data Factory pipelines ingesting batch HL7 v2 clinical messages, mapping patient, encounter, and lab data from hospital EHR and laboratory systems into schema-validated datasets.",
+      "Created ETL and ELT transformation logic with Python and SQL, mapping and validating raw HL7 data into FHIR R4 resources for patient, condition, and observation records.",
+      "Used Apache Spark on Databricks for distributed cleansing and deduplication of clinical datasets, accelerating curated data delivery by 35%.",
+      "Supported pipeline orchestration with Apache Airflow across ingestion and transformation jobs, loading curated FHIR datasets into Azure Synapse for clinical reporting teams.",
+      "Designed a RAG pipeline with embeddings and semantic vector search, applying prompt engineering and LLM evaluation, improving FHIR field-extraction accuracy from unstructured clinical notes by 30% over the prior keyword-based method.",
+      "Implemented PHI de-identification using HIPAA Safe Harbor with validation controls, reducing data-compliance review effort by 40%.",
     ],
   },
 ];
@@ -304,7 +314,7 @@ export const education: EducationItem[] = [
     status: "Graduated",
   },
   {
-    school: "SPPU University",
+    school: "Savitribai Phule Pune University",
     degree: "B.E. Computer Engineering",
     location: "Pune, India",
     period: "Aug 2019 – May 2023",
@@ -321,7 +331,7 @@ export const certifications: CertificationItem[] = [
   {
     name: "Databricks Certified Data Engineer Associate",
     issuer: "Databricks",
-    date: "June 2026",
+    date: "Jun 2026",
   },
 ];
 

@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
-import { identity } from "@/data/resume";
+import { identity, profile } from "@/data/resume";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -34,18 +34,22 @@ export const metadata: Metadata = {
     default: `${identity.name} — ${identity.role}`,
     template: `%s — ${identity.name}`,
   },
-  description:
-    "Portfolio of Chirag Deepak Shinde, Data Engineer & Data Scientist. I build the pipelines that make machine learning possible — from ingestion and medallion architecture to forecasting and NLP models.",
+  description: `Portfolio of ${identity.name}. ${profile}`,
   keywords: [
     "Data Engineer",
-    "Data Scientist",
+    "Streaming data",
+    "Apache Kafka",
+    "Spark Structured Streaming",
+    "Apache Airflow",
     "ETL",
-    "Azure Data Factory",
+    "AWS",
+    "Azure",
     "Databricks",
-    "PySpark",
     "Snowflake",
-    "Machine Learning",
-    "MLOps",
+    "Fraud detection",
+    "AML",
+    "HL7",
+    "FHIR",
     "Chicago",
   ],
   authors: [{ name: identity.name }],
@@ -55,16 +59,14 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     title: `${identity.name} — ${identity.role}`,
-    description:
-      "I build the pipelines that make machine learning possible. Data engineering as the foundation, data science as the specialization.",
+    description: identity.tagline,
     siteName: `${identity.name} — Portfolio`,
     images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${identity.name} portfolio` }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${identity.name} — ${identity.role}`,
-    description:
-      "I build the pipelines that make machine learning possible. Data engineering as the foundation, data science as the specialization.",
+    description: identity.tagline,
     images: [OG_IMAGE],
   },
   robots: { index: true, follow: true },
@@ -98,9 +100,22 @@ const personJsonLd = {
   "@type": "Person",
   name: identity.name,
   jobTitle: identity.role,
+  description: profile,
   email: `mailto:${identity.email}`,
   url: SITE_URL,
   address: { "@type": "PostalAddress", addressLocality: "Chicago", addressRegion: "IL" },
+  worksFor: { "@type": "Organization", name: "Bank of America" },
+  knowsAbout: [
+    "Data engineering",
+    "Apache Kafka",
+    "Apache Spark",
+    "Apache Airflow",
+    "ETL/ELT",
+    "AWS",
+    "Azure",
+    "HL7 / FHIR interoperability",
+    "Fraud and AML detection",
+  ],
   sameAs: [identity.linkedinUrl],
   alumniOf: [
     { "@type": "CollegeOrUniversity", name: "University of Illinois at Chicago" },
