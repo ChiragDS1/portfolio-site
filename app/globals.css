@@ -2,114 +2,251 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ------------------------------------------------------------------ */
-/*  "Iris" design tokens                                              */
-/*  Values are space-separated RGB channels so Tailwind alpha         */
-/*  modifiers (bg-accent/15) work.                                    */
-/* ------------------------------------------------------------------ */
+/* ==================================================================
+   "Worlds" token system
+   ------------------------------------------------------------------
+   Two layers:
+     1. Shared tokens (text, muted, glass) — flip with the theme.
+     2. Per-world tokens — set by [data-world="…"] on each <section>
+        and on the matching backdrop layer. Components only ever read
+        tokens; no raw hex lives in a component.
+   Colors are space-separated RGB channels so Tailwind alpha modifiers
+   (text-w-accent/70) work.
+   ================================================================== */
 
 :root {
-  /* Light theme — cool paper, not cream */
-  --bg: 244 244 249;
-  --surface: 255 255 255;
-  --line: 224 225 236;
-  --text: 20 22 42;
-  --muted: 88 94 126;
-  --accent: 91 69 217; /* iris */
-  --accent-2: 154 95 9; /* gold */
-
-  --grid: 20 22 42;
+  /* Light is the non-default theme; dark is applied via .dark on <html>. */
+  --text: 29 26 46;        /* #1D1A2E */
+  --muted: 91 88 115;      /* #5B5873 */
+  --glass: 255 255 255;
+  --glass-a: 0.72;
+  --glass-line: 255 255 255;
+  --glass-line-a: 0.9;
+  --ghost: 255 255 255;
+  --ghost-a: 0.85;         /* ghost words read as a lighter tint on light */
+  --scrim: 238 240 251;
+  /* Usage dots in the toolkit grid — one per experience world. */
+  --dot-boa: 47 95 208;    /* #2F5FD0 */
+  --dot-acc: 31 138 102;   /* #1F8A66 */
   color-scheme: light;
 }
 
 .dark {
-  /* Dark theme (default) — deep indigo-ink */
-  --bg: 11 13 23;
-  --surface: 20 24 38;
-  --line: 36 42 66;
-  --text: 237 238 247;
-  --muted: 156 160 191;
-  --accent: 139 124 246; /* iris */
-  --accent-2: 245 176 73; /* gold */
-
-  --grid: 156 160 191;
+  --text: 236 234 248;     /* #ECEAF8 */
+  --muted: 168 164 199;    /* #A8A4C7 */
+  --glass: 30 29 62;       /* #1E1D3E */
+  --glass-a: 0.72;
+  --glass-line: 52 50 106; /* #34326A */
+  --glass-line-a: 1;
+  --ghost: 255 255 255;
+  --ghost-a: 0.09;
+  --scrim: 14 13 31;
+  --dot-boa: 110 155 255;  /* #6E9BFF */
+  --dot-acc: 127 227 182;  /* #7FE3B6 */
   color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------
+   Per-world palettes.
+   --w-accent     graphics / fills            (3:1 vs world bg)
+   --w-accent-text accent used for TEXT       (4.5:1 vs world bg + glass)
+   --w-alert / --w-alert-text  Bank of America only
+   A world may override --text/--muted where its background demands it.
+   Light-mode graphic + accent-text values marked (adj) were darkened
+   from the brief's values to clear WCAG; see README.
+   ------------------------------------------------------------------ */
+
+[data-world="home"] {
+  --w-bg: 238 240 251;          /* #EEF0FB */
+  --w-glow-1: 214 222 255;      /* #D6DEFF */
+  --w-glow-2: 230 218 255;      /* #E6DAFF */
+  --w-glow-3: 248 224 234;      /* #F8E0EA */
+  --w-accent: 51 72 240;        /* #3348F0 */
+  --w-accent-text: 51 72 240;
+}
+.dark [data-world="home"] {
+  --w-bg: 14 13 31;             /* #0E0D1F */
+  --w-glow-1: 24 32 74;         /* #18204A */
+  --w-glow-2: 36 26 68;         /* #241A44 */
+  --w-glow-3: 42 27 52;         /* #2A1B34 */
+  --w-accent: 143 162 255;      /* #8FA2FF */
+  --w-accent-text: 143 162 255;
+}
+
+[data-world="about"] {
+  --w-bg: 243 238 252;          /* #F3EEFC */
+  --w-glow-1: 230 218 255;      /* #E6DAFF */
+  --w-glow-2: 246 225 240;      /* #F6E1F0 */
+  --w-glow-3: 230 218 255;
+  --w-accent: 122 79 214;       /* #7A4FD6 */
+  --w-accent-text: 122 79 214;
+}
+.dark [data-world="about"] {
+  --w-bg: 21 15 38;             /* #150F26 */
+  --w-glow-1: 33 24 63;         /* #21183F */
+  --w-glow-2: 42 25 54;         /* #2A1936 */
+  --w-glow-3: 33 24 63;
+  --w-accent: 195 166 255;      /* #C3A6FF */
+  --w-accent-text: 195 166 255;
+}
+
+[data-world="experience-bank-of-america"] {
+  --w-bg: 232 240 250;          /* #E8F0FA */
+  --w-glow-1: 214 228 247;      /* #D6E4F7 */
+  --w-glow-2: 221 234 246;      /* #DDEAF6 */
+  --w-glow-3: 214 228 247;
+  --w-accent: 23 150 138;       /* #17968A (adj) */
+  --w-accent-text: 12 116 104;  /* #0C7468 (adj) */
+  --w-alert: 227 148 50;        /* #E39432 */
+  --w-alert-text: 138 79 10;    /* #8A4F0A */
+  --text: 19 41 75;             /* #13294B */
+  --muted: 78 106 140;          /* #4E6A8C */
+}
+.dark [data-world="experience-bank-of-america"] {
+  --w-bg: 10 22 48;             /* #0A1630 */
+  --w-glow-1: 16 40 74;         /* #10284A */
+  --w-glow-2: 18 43 75;         /* #122B4B */
+  --w-glow-3: 16 40 74;
+  --w-accent: 63 214 193;       /* #3FD6C1 */
+  --w-accent-text: 63 214 193;
+  --w-alert: 255 179 92;        /* #FFB35C */
+  --w-alert-text: 255 179 92;
+  --text: 234 242 255;          /* #EAF2FF */
+  --muted: 159 179 207;         /* #9FB3CF */
+}
+
+[data-world="experience-accenture"] {
+  --w-bg: 230 245 240;          /* #E6F5F0 */
+  --w-glow-1: 211 238 229;      /* #D3EEE5 */
+  --w-glow-2: 220 242 235;      /* #DCF2EB */
+  --w-glow-3: 211 238 229;
+  --w-accent: 43 149 115;       /* #2B9573 (adj) */
+  --w-accent-text: 14 107 79;   /* #0E6B4F */
+  --text: 15 59 51;             /* #0F3B33 */
+  --muted: 63 110 98;           /* #3F6E62 */
+}
+.dark [data-world="experience-accenture"] {
+  --w-bg: 11 35 36;             /* #0B2324 */
+  --w-glow-1: 15 52 52;         /* #0F3434 */
+  --w-glow-2: 18 59 55;         /* #123B37 */
+  --w-glow-3: 15 52 52;
+  --w-accent: 127 227 182;      /* #7FE3B6 */
+  --w-accent-text: 127 227 182;
+  --text: 230 251 242;          /* #E6FBF2 */
+  --muted: 156 201 189;         /* #9CC9BD */
+}
+
+[data-world="projects"] {
+  --w-bg: 251 237 234;          /* #FBEDEA */
+  --w-glow-1: 248 220 212;      /* #F8DCD4 */
+  --w-glow-2: 246 225 236;      /* #F6E1EC */
+  --w-glow-3: 248 220 212;
+  --w-accent: 201 107 82;       /* #C96B52 (adj) */
+  --w-accent-text: 181 68 39;   /* #B54427 (adj) */
+}
+.dark [data-world="projects"] {
+  --w-bg: 28 15 30;             /* #1C0F1E */
+  --w-glow-1: 46 23 48;         /* #2E1730 */
+  --w-glow-2: 58 26 42;         /* #3A1A2A */
+  --w-glow-3: 46 23 48;
+  --w-accent: 255 138 107;      /* #FF8A6B */
+  --w-accent-text: 255 138 107;
 }
 
 /* ------------------------------------------------------------------ */
 
 @layer base {
-  * {
-    border-color: rgb(var(--line));
-  }
-
   html {
     scroll-behavior: smooth;
+    /* iOS Safari inflates text in rotated/odd layouts without this. */
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    background-color: rgb(var(--bg));
+    background-color: rgb(var(--scrim));
     color: rgb(var(--text));
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Ease the dark<->light swap instead of a hard brightness jump. */
+    transition: background-color 300ms ease, color 300ms ease;
+    overflow-x: hidden;
   }
 
-  section[id] {
-    scroll-margin-top: 6rem;
+  section[data-world] {
+    scroll-margin-top: 5rem;
   }
 
-  /* Never remove focus rings — make them unmistakable. */
   :focus-visible {
-    outline: 2px solid rgb(var(--accent));
+    outline: 2px solid rgb(var(--w-accent-text, var(--text)));
     outline-offset: 2px;
-    border-radius: 3px;
+    border-radius: 4px;
   }
 
   ::selection {
-    background-color: rgb(var(--accent) / 0.28);
+    background-color: rgb(var(--w-accent) / 0.3);
     color: rgb(var(--text));
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.001ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important;
-    }
   }
 }
 
 @layer components {
+  /* Frosted panel. Falls back to a solid surface where the platform or
+     the user asks for reduced transparency / more contrast. */
+  .glass {
+    background-color: rgb(var(--glass) / var(--glass-a));
+    border: 1px solid rgb(var(--glass-line) / var(--glass-line-a));
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+  }
+
   .mono-label {
-    @apply font-mono text-xs uppercase tracking-[0.16em] text-muted;
+    @apply font-mono text-xs uppercase tracking-[0.14em];
+    color: rgb(var(--muted));
   }
 
-  .pill {
-    @apply inline-flex items-center rounded-md border border-line bg-surface px-2.5 py-1 font-mono text-xs text-muted;
+  .world-wrap {
+    @apply mx-auto w-full px-5 sm:px-6 lg:px-8;
+    max-width: 72rem;
   }
 
-  .section-wrap {
-    @apply mx-auto w-full max-w-content px-5 sm:px-6;
-  }
-
-  .panel {
-    @apply rounded-xl border border-line bg-surface/60;
+  .read-wrap {
+    @apply mx-auto w-full;
+    max-width: 46rem;
   }
 }
 
-/*
- * The Experience timeline fill is driven by a Framer motion value (scaleY tied
- * to scroll). Under reduced motion we don't want a scroll-linked animation at
- * all, so the inline transform is overridden and the line simply renders full
- * height, static.
- */
+/* ------------------------------------------------------------------
+   Accessibility media queries
+   ------------------------------------------------------------------ */
+
 @media (prefers-reduced-motion: reduce) {
-  [data-timeline-fill] {
-    transform: none !important;
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background-color: rgb(var(--glass));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .glass {
+    background-color: rgb(var(--glass));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-color: rgb(var(--text) / 0.6);
+  }
+  .mono-label {
+    color: rgb(var(--text));
   }
 }

@@ -1,9 +1,13 @@
 # Chirag Shinde — Portfolio
 
-A single-page portfolio built around one coherent identity: **Data Engineer** —
-streaming and batch pipelines for regulated industries (real-time fraud/AML in
-banking, HL7-to-FHIR interoperability in healthcare). The hero's signature
-element is an animated **Ingest → Stream → Govern → Serve** flow.
+A single-page portfolio built as five explorable **worlds** — Home, About, and
+one world per role, then Projects. Each world owns a palette; a shared fixed
+backdrop cross-fades between them as you scroll, and a giant ghosted word names
+where you are. Dark by default, with a light toggle.
+
+Identity throughout: **Data Engineer** — streaming and batch pipelines for
+regulated industries (real-time fraud/AML in banking, HL7-to-FHIR
+interoperability in healthcare).
 
 - **Next.js 14** (App Router) + **TypeScript**
 - **Tailwind CSS** — "Iris" design tokens in `app/globals.css` / `tailwind.config.ts`
@@ -296,28 +300,23 @@ app/
   icon.svg          favicon
   robots.ts  sitemap.ts   static robots.txt / sitemap.xml, URLs from lib/site.ts
 components/
-  Portfolio.tsx     section order + <MotionConfig reducedMotion="user">
-  Nav.tsx           sticky nav, scroll-spy, mobile menu
-  Hero.tsx          staggered load: name / role / tagline / PipelineFlow / ResumeButton
-  PipelineFlow.tsx  ← signature element (Ingest → Stream → Govern → Serve)
-  StatBar.tsx  CountUp.tsx     scroll-triggered count-ups
-  CoreTech.tsx      brand-logo strip (streaming / cloud / MLOps), monochrome
-  ResumeButton.tsx  single résumé download link (Data Engineer PDF)
-  About.tsx  Experience.tsx  Projects.tsx  Skills.tsx  Education.tsx  Contact.tsx
-  ThemeToggle.tsx  Reveal.tsx  SectionHeading.tsx  GridBackdrop.tsx
+  Portfolio.tsx     world order + <MotionConfig reducedMotion="user">
+  TopBar.tsx        frosted chrome: wordmark, résumé, theme, menu
+  WorldSwitcher.tsx bottom pill; its list grows out of and back into the pill
+  MenuOverlay.tsx   full-screen world list (portaled past the blurred bar)
+  Loader.tsx        first-visit-per-session counter, <900ms, skipped if reduced
+  ContactRow.tsx  StatChips.tsx  ResumeButton.tsx  ThemeToggle.tsx  CountUp.tsx
+  worlds/
+    WorldContext.tsx   active world, scroll-to, hash sync (replaceState)
+    WorldBackdrop.tsx  the cross-fading palette layer
+    WorldSection.tsx   <section data-world> + ghosted title
+    HomeWorld.tsx  HubScene.tsx       isometric hub, streams, bubbles
+    AboutWorld.tsx ToolkitGrid.tsx    toolkit + usage dots + detail strip
+    JobWorld.tsx   PipelineRow.tsx  scenes.tsx   both experience worlds
+    ProjectsWorld.tsx                cards + decorative vignettes
 data/
-  resume.ts         ← all content lives here
-  techIcons.ts      generated brand SVG paths (npm run gen:icons)
+  resume.ts         ← all content; worlds, toolkit and tool usage live here too
+  techIcons.ts      generated brand paths + hex + luminance (npm run gen:icons)
 lib/
-  motion.ts         shared motion vocabulary
-  site.ts           BASE_PATH / SITE_URL / withBasePath()  ← subpath lives here
-next.config.mjs     REPO_SUBPATH constant  ← the one place to blank for a custom domain
-public/
-  resume/*.pdf      résumé variants
-  og.svg            OG image template
-  CNAME.example     copy to public/CNAME when moving to a custom domain
-  .nojekyll         stops GitHub Pages' Jekyll from hiding _next/
-scripts/
-  make-placeholder-pdfs.mjs   (postinstall)
-  gen-tech-icons.mjs          (npm run gen:icons)
+  motion.ts  useSceneActive.ts  usePressed.ts  site.ts
 ```

@@ -2,12 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
+import { usePressed } from "@/lib/usePressed";
 
 type Theme = "dark" | "light";
 
-export function ThemeToggle() {
+/**
+ * Dark is the default regardless of system preference; this only flips to
+ * light and remembers the choice. The pre-paint script in app/layout.tsx
+ * applies the stored value before first render, so there's no flash.
+ */
+export function ThemeToggle({ className = "" }: { className?: string }) {
   const [theme, setTheme] = useState<Theme>("dark");
   const [mounted, setMounted] = useState(false);
+  const { pressed, handlers } = usePressed();
 
   useEffect(() => {
     setMounted(true);
@@ -21,11 +28,10 @@ export function ThemeToggle() {
     try {
       localStorage.setItem("theme", next);
     } catch {
-      /* ignore private-mode write failures */
+      /* private mode — the choice just won't persist */
     }
   }
 
-  // Render a stable placeholder until mounted to avoid hydration mismatch.
   const isDark = mounted ? theme === "dark" : true;
 
   return (
@@ -33,9 +39,13 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
-      className="grid h-11 w-11 place-items-center rounded-md border border-line bg-surface text-muted transition-colors hover:text-text"
+      className={`grid h-11 w-11 place-items-center rounded-full ${
+        pressed ? "scale-95 transition-none" : "transition-transform duration-150"
+      } ${className}`}
+      style={{ touchAction: "manipulation", color: "rgb(var(--text))" }}
+      {...handlers}
     >
-      {isDark ? <Sun className="h-4 w-4" aria-hidden /> : <Moon className="h-4 w-4" aria-hidden />}
+      {isDark ? <Sun className="h-[18px] w-[18px]" aria-hidden /> : <Moon className="h-[18px] w-[18px]" aria-hidden />}
     </button>
   );
 }

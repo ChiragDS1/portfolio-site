@@ -16,13 +16,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "rgb(var(--bg) / <alpha-value>)",
-        surface: "rgb(var(--surface) / <alpha-value>)",
-        line: "rgb(var(--line) / <alpha-value>)",
+        // Shared, theme-level
         text: "rgb(var(--text) / <alpha-value>)",
         muted: "rgb(var(--muted) / <alpha-value>)",
-        accent: "rgb(var(--accent) / <alpha-value>)",
-        "accent-2": "rgb(var(--accent-2) / <alpha-value>)",
+        scrim: "rgb(var(--scrim) / <alpha-value>)",
+        // Per-world — resolved from whichever [data-world] block is in scope
+        "w-bg": "rgb(var(--w-bg) / <alpha-value>)",
+        "w-accent": "rgb(var(--w-accent) / <alpha-value>)",
+        "w-accent-text": "rgb(var(--w-accent-text) / <alpha-value>)",
+        "w-alert": "rgb(var(--w-alert) / <alpha-value>)",
+        "w-alert-text": "rgb(var(--w-alert-text) / <alpha-value>)",
       },
       fontFamily: {
         sans: ["var(--font-plex-sans)", "system-ui", "sans-serif"],
@@ -33,29 +36,40 @@ const config: Config = {
         content: "46rem",
       },
       keyframes: {
-        "flow-dash": { to: { strokeDashoffset: "-16" } },
-        /**
-         * One "data packet" travelling the 30-user-unit rail of a connector.
-         * The move happens in the first third of the cycle; the rest of the
-         * cycle it sits invisible at the end, so staggering three connectors by
-         * 1/3 of the duration each gives exactly one visible dot at a time.
-         */
+        /* One data packet travelling a 30-unit connector rail. */
         "flow-packet": {
           "0%": { transform: "translateX(0)", opacity: "0" },
-          "4%": { opacity: "0.85" },
-          "29%": { opacity: "0.85" },
-          "33%": { transform: "translateX(30px)", opacity: "0" },
-          "100%": { transform: "translateX(30px)", opacity: "0" },
+          "6%": { opacity: "0.9" },
+          "44%": { opacity: "0.9" },
+          "50%, 100%": { transform: "translateX(30px)", opacity: "0" },
         },
-        "flow-pulse": {
-          "0%, 100%": { opacity: "0.25" },
-          "50%": { opacity: "0.9" },
+        /* Transaction ticker strip — one full width of travel. */
+        ticker: { to: { transform: "translateX(-50%)" } },
+        /* ECG trace sweeping across the healthcare scene. */
+        "ecg-sweep": { to: { strokeDashoffset: "-1200" } },
+        /* Slow ambient breathing for the hub core. */
+        "core-pulse": {
+          "0%, 100%": { opacity: "0.45", transform: "scale(1)" },
+          "50%": { opacity: "0.8", transform: "scale(1.06)" },
+        },
+        /* Amber flagged-transaction alert blip. */
+        "alert-blip": {
+          "0%, 72%, 100%": { opacity: "0", transform: "scale(0.6)" },
+          "78%": { opacity: "1", transform: "scale(1.15)" },
+          "86%": { opacity: "0.65", transform: "scale(1)" },
+        },
+        "drift-in": {
+          "0%": { opacity: "0", transform: "translate(var(--dx,0), var(--dy,0))" },
+          "55%, 100%": { opacity: "1", transform: "translate(0,0)" },
         },
       },
       animation: {
-        "flow-dash": "flow-dash 1.1s linear infinite",
-        "flow-packet": "flow-packet 3.6s linear infinite",
-        "flow-pulse": "flow-pulse 3s ease-in-out infinite",
+        "flow-packet": "flow-packet 3.2s linear infinite",
+        ticker: "ticker 40s linear infinite",
+        "ecg-sweep": "ecg-sweep 4s linear infinite",
+        "core-pulse": "core-pulse 5s ease-in-out infinite",
+        "alert-blip": "alert-blip 7s ease-in-out infinite",
+        "drift-in": "drift-in 6s ease-in-out infinite",
       },
     },
   },

@@ -1,49 +1,33 @@
-import type { Variants } from "framer-motion";
+import type { Transition, Variants } from "framer-motion";
 
 /**
- * Shared motion vocabulary — one coherent choreography, not scattered effects.
+ * Motion vocabulary, following Apple's damping/response model.
  *
- * `<MotionConfig reducedMotion="user">` in components/Portfolio.tsx makes Framer
- * Motion drop transform / layout / opacity animation entirely when the visitor
- * has `prefers-reduced-motion: reduce`. Non-Framer motion (the CountUp counter,
- * the SVG flow loop) is gated separately with `useReducedMotion()`.
+ * House default is critically damped (`bounce: 0`) — overshoot on something
+ * that merely faded in reads as noise. Bounce is reserved for the one gesture
+ * that carries momentum: the bubble zoom.
  */
 
-export const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+/** Default UI spring: no overshoot, ~0.35s response. */
+export const spring: Transition = { type: "spring", bounce: 0, duration: 0.35 };
 
-/* Hero load sequence — name → tagline → pipeline → résumé button */
-export const heroStagger: Variants = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.12, delayChildren: 0.05 },
-  },
-};
+/** Slightly slower sibling for larger surfaces (menu overlay, switcher list). */
+export const springSoft: Transition = { type: "spring", bounce: 0, duration: 0.4 };
 
-export const heroItem: Variants = {
-  hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_OUT } },
-};
+/** The single momentum-carrying motion on the site: zooming into a bubble. */
+export const springBubble: Transition = { type: "spring", bounce: 0.18, duration: 0.4 };
 
-/* Pipeline diagram — nodes stagger, then connectors draw */
-export const flowStagger: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.14, delayChildren: 0.15 } },
-};
+/** Backdrop palette cross-fade — the "you've entered a new place" beat. */
+export const worldFade: Transition = { duration: 0.6, ease: [0.22, 1, 0.36, 1] };
 
-export const flowNode: Variants = {
-  hidden: { opacity: 0, y: 10, scale: 0.97 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: EASE_OUT } },
-};
-
-/* Scroll-in reveal for section content — once per item */
 export const reveal: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_OUT } },
+  hidden: { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
 };
 
 export const revealStagger: Variants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
+  visible: { transition: { staggerChildren: 0.07 } },
 };
 
 export const scrollViewport = { once: true, margin: "0px 0px -12% 0px" } as const;

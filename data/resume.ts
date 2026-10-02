@@ -40,78 +40,199 @@ export const about: string[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* Pipeline narrative — the signature hero element                     */
-/* ------------------------------------------------------------------ */
-
-export interface PipelineStage {
-  key: string;
-  label: string;
-  blurb: string;
-  /** icon id resolved in components/PipelineFlow.tsx */
-  icon: "ingest" | "stream" | "govern" | "serve";
-}
-
-export const pipelineStages: PipelineStage[] = [
-  { key: "ingest", label: "Ingest", blurb: "Kafka events into an S3 data lake", icon: "ingest" },
-  { key: "stream", label: "Stream", blurb: "Spark Structured Streaming + Redis lookups", icon: "stream" },
-  { key: "govern", label: "Govern", blurb: "Data-quality checks, HIPAA de-identification", icon: "govern" },
-  { key: "serve", label: "Serve", blurb: "Real-time fraud alerts and FHIR datasets", icon: "serve" },
-];
-
-/* ------------------------------------------------------------------ */
-/* Stat bar — real numbers from the resume, animated as count-ups      */
+/* Stat chips — rendered beside each experience world                  */
 /* ------------------------------------------------------------------ */
 
 /**
- * Two shapes of stat:
- *  - "count"      → counts 0 → value, then renders `suffix`. `revealSuffix`
- *                   holds the suffix back until the count lands (used by 5M+).
- *  - "transition" → a before/after: `before` strikes through, then `after`
- *                   is revealed (used by the fraud-alert latency figure).
+ * Two shapes:
+ *  - "count"      counts 0 -> value then renders `suffix` (`revealSuffix`
+ *                 holds the unit back until the number lands).
+ *  - "transition" a before/after: `before` strikes through, `after` is revealed.
  */
-export type Stat =
+export type StatChip =
   | {
       kind: "count";
       value: number;
       suffix: string;
-      /** Omit for a plain volume figure that isn't an increase/decrease. */
-      trend?: "up" | "down";
-      /** Hold the suffix back until the count finishes. */
       revealSuffix?: boolean;
       label: string;
     }
-  | {
-      kind: "transition";
-      before: string;
-      after: string;
-      label: string;
-    };
+  | { kind: "transition"; before: string; after: string; label: string };
 
-export const stats: Stat[] = [
-  { kind: "count", value: 5, suffix: "M+", revealSuffix: true, label: "daily transactions processed" },
-  { kind: "transition", before: "~15 min", after: "real time", label: "fraud-alert latency" },
-  { kind: "count", value: 25, suffix: "%", trend: "down", label: "lower pipeline operating cost" },
-  { kind: "count", value: 45, suffix: "%", trend: "down", label: "less manual data-integration effort" },
+/* ------------------------------------------------------------------ */
+/* Worlds — the five explorable scenes, in scroll order                */
+/* ------------------------------------------------------------------ */
+
+export type WorldId =
+  | "home"
+  | "about"
+  | "experience-bank-of-america"
+  | "experience-accenture"
+  | "projects";
+
+export interface World {
+  id: WorldId;
+  /** Shown in the switcher and the menu. */
+  label: string;
+  /** Second line in the switcher, when a world needs qualifying. */
+  sub?: string;
+  /** The giant low-opacity word behind the scene. */
+  ghost: string;
+  /** Icon id resolved in components/worldIcons.tsx. */
+  icon: "hub" | "about" | "bank" | "health" | "projects";
+}
+
+export const worlds: World[] = [
+  { id: "home", label: "Home", ghost: identity.name.split(" ")[0], icon: "hub" },
+  { id: "about", label: "About", ghost: "About", icon: "about" },
+  {
+    id: "experience-bank-of-america",
+    label: "Experience",
+    sub: "Bank of America",
+    ghost: "Fraud & AML",
+    icon: "bank",
+  },
+  {
+    id: "experience-accenture",
+    label: "Experience",
+    sub: "Accenture",
+    ghost: "HL7 → FHIR",
+    icon: "health",
+  },
+  { id: "projects", label: "Projects", ghost: "Projects", icon: "projects" },
 ];
 
 /* ------------------------------------------------------------------ */
-/* Core Technologies strip                                             */
+/* Toolkit — the About world's grid                                    */
 /* ------------------------------------------------------------------ */
 
-export const coreTech: { group: string; items: string[] }[] = [
+/** Tools without a simple-icons mark render as a text badge instead. */
+export const toolBadges: Record<string, string> = {
+  Azure: "Az",
+  "Data Factory": "DF",
+  Synapse: "Sy",
+};
+
+export const toolkit: { group: string; items: string[] }[] = [
   {
     group: "Streaming & Processing",
-    items: ["Apache Kafka", "Apache Spark", "Apache Airflow", "dbt", "Databricks"],
+    items: ["Kafka", "Spark", "Airflow", "dbt", "Databricks", "Python"],
   },
   {
-    group: "Cloud & Storage",
-    items: ["AWS", "Azure", "Snowflake", "PostgreSQL", "Redis", "MongoDB"],
+    group: "Cloud & Warehouses",
+    items: ["AWS", "Azure", "Data Factory", "Synapse", "Snowflake", "PostgreSQL"],
   },
   {
-    group: "MLOps & AI",
-    items: ["Docker", "Kubernetes", "Terraform", "MLflow", "LangChain", "Pinecone"],
+    group: "Platforms, MLOps & AI",
+    items: ["Docker", "Kubernetes", "Terraform", "MLflow", "LangChain", "Redis"],
   },
 ];
+
+export interface ToolUse {
+  /** Which experience world this usage points at. */
+  world: Extract<WorldId, "experience-bank-of-america" | "experience-accenture">;
+  company: string;
+  detail: string;
+}
+
+/**
+ * Where each tool was actually used. Drawn from the experience bullets below —
+ * a tool with no entry here simply has no usage dot and isn't interactive.
+ */
+export const toolUsage: Record<string, ToolUse[]> = {
+  Kafka: [
+    {
+      world: "experience-bank-of-america",
+      company: "Bank of America",
+      detail: "Fault-tolerant ingestion for 5M+ daily transactions into an S3 data lake",
+    },
+  ],
+  Spark: [
+    {
+      world: "experience-bank-of-america",
+      company: "Bank of America",
+      detail: "Moved fraud scoring from batch to Spark Structured Streaming",
+    },
+    {
+      world: "experience-accenture",
+      company: "Accenture",
+      detail: "Distributed cleansing and deduplication of clinical datasets",
+    },
+  ],
+  Airflow: [
+    {
+      world: "experience-bank-of-america",
+      company: "Bank of America",
+      detail: "Orchestrated distributed jobs on AWS, lowering operating cost 25%",
+    },
+    {
+      world: "experience-accenture",
+      company: "Accenture",
+      detail: "Orchestrated ingestion and transformation into Azure Synapse",
+    },
+  ],
+  Databricks: [
+    {
+      world: "experience-accenture",
+      company: "Accenture",
+      detail: "Spark on Databricks, 35% faster curated data delivery",
+    },
+  ],
+  Python: [
+    {
+      world: "experience-bank-of-america",
+      company: "Bank of America",
+      detail: "ETL/ELT pipelines and data models for transaction records",
+    },
+    {
+      world: "experience-accenture",
+      company: "Accenture",
+      detail: "HL7 → FHIR R4 transformation logic",
+    },
+  ],
+  AWS: [
+    {
+      world: "experience-bank-of-america",
+      company: "Bank of America",
+      detail: "S3 data lake, Lambda event triggers, Airflow on AWS",
+    },
+  ],
+  Azure: [
+    {
+      world: "experience-accenture",
+      company: "Accenture",
+      detail: "Data Factory → Databricks → Synapse healthcare pipeline",
+    },
+  ],
+  "Data Factory": [
+    {
+      world: "experience-accenture",
+      company: "Accenture",
+      detail: "Configurable pipelines ingesting batch HL7 v2 clinical messages",
+    },
+  ],
+  Synapse: [
+    {
+      world: "experience-accenture",
+      company: "Accenture",
+      detail: "Curated FHIR datasets for clinical reporting teams",
+    },
+  ],
+  MLflow: [
+    {
+      world: "experience-bank-of-america",
+      company: "Bank of America",
+      detail: "Tracked model versions, parameters and metrics",
+    },
+  ],
+  Redis: [
+    {
+      world: "experience-bank-of-america",
+      company: "Bank of America",
+      detail: "Low-latency feature lookups for real-time fraud scoring",
+    },
+  ],
+};
 
 /* ------------------------------------------------------------------ */
 /* Résumé                                                              */
@@ -213,6 +334,8 @@ export const skillGroups: SkillGroup[] = [
 /* ------------------------------------------------------------------ */
 
 export interface ExperienceItem {
+  /** The world this role owns. */
+  world: Extract<WorldId, "experience-bank-of-america" | "experience-accenture">;
   company: string;
   location: string;
   period: string;
@@ -221,10 +344,13 @@ export interface ExperienceItem {
   /** Marks the role as ongoing — renders a "Current" pill next to the dates. */
   current?: boolean;
   bullets: string[];
+  /** Headline figures for this role, drawn from the bullets below. */
+  chips: StatChip[];
 }
 
 export const experience: ExperienceItem[] = [
   {
+    world: "experience-bank-of-america",
     company: "Bank of America",
     location: "Chicago, IL",
     period: "Sep 2025 – Present",
@@ -240,8 +366,14 @@ export const experience: ExperienceItem[] = [
       "Automated data-quality checks (schema, null, and range validation) in CI/CD pipelines and tracked model versions, parameters, and metrics with MLflow for reproducible deployments and end-to-end observability.",
       "Built the data pipeline feeding an LLM alert-summarization tool, preparing and indexing case data for retrieval-augmented generation, adopted by fraud and compliance teams to speed up alert triage.",
     ],
+    chips: [
+      { kind: "count", value: 5, suffix: "M+", revealSuffix: true, label: "daily transactions" },
+      { kind: "transition", before: "~15 min", after: "real time", label: "fraud-alert latency" },
+      { kind: "count", value: 25, suffix: "%", label: "lower pipeline cost" },
+    ],
   },
   {
+    world: "experience-accenture",
     company: "Accenture",
     location: "Pune, India",
     period: "Jun 2022 – Jul 2024",
@@ -256,6 +388,12 @@ export const experience: ExperienceItem[] = [
       "Designed a RAG pipeline with embeddings and semantic vector search, applying prompt engineering and LLM evaluation, improving FHIR field-extraction accuracy from unstructured clinical notes by 30% over the prior keyword-based method.",
       "Implemented PHI de-identification using HIPAA Safe Harbor with validation controls, reducing data-compliance review effort by 40%.",
     ],
+    chips: [
+      { kind: "count", value: 45, suffix: "%", label: "less manual integration" },
+      { kind: "count", value: 35, suffix: "%", label: "faster curated delivery" },
+      { kind: "count", value: 30, suffix: "%", label: "better field extraction" },
+      { kind: "count", value: 40, suffix: "%", label: "less compliance review" },
+    ],
   },
 ];
 
@@ -264,6 +402,8 @@ export const experience: ExperienceItem[] = [
 /* ------------------------------------------------------------------ */
 
 export interface ProjectItem {
+  /** Decorative vignette resolved in components/worlds/ProjectsWorld.tsx. */
+  vignette: "rag" | "youtube";
   name: string;
   period: string;
   tags: string[];
@@ -273,6 +413,7 @@ export interface ProjectItem {
 // Static, informational cards only — not linked anywhere.
 export const projects: ProjectItem[] = [
   {
+    vignette: "rag",
     name: "RAG-based Q&A System with Vector DB",
     period: "Aug 2025 – Dec 2025",
     tags: ["PySpark", "FAISS", "PostgreSQL", "Gemini LLM", "Streamlit", "Dagster"],
@@ -283,6 +424,7 @@ export const projects: ProjectItem[] = [
     ],
   },
   {
+    vignette: "youtube",
     name: "YouTube Mental Health Recovery Analysis",
     period: "Jan 2025 – May 2025",
     tags: ["YouTube API", "PySpark", "Dagster", "RoBERTa / Gemini", "Statistical Modeling", "Power BI"],
@@ -336,16 +478,3 @@ export const certifications: CertificationItem[] = [
     date: "Jun 2026",
   },
 ];
-
-/* ------------------------------------------------------------------ */
-/* Nav sections                                                        */
-/* ------------------------------------------------------------------ */
-
-export const navSections = [
-  { id: "home", label: "Home" },
-  { id: "about", label: "About" },
-  { id: "experience", label: "Experience" },
-  { id: "projects", label: "Projects" },
-  { id: "skills", label: "Skills" },
-  { id: "contact", label: "Contact" },
-] as const;
